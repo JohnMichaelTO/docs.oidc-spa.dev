@@ -37,7 +37,7 @@ The  client it is usualy something like '<mark style="color:yellow;">myapp</mark
 6. Fill in the <mark style="color:yellow;">**Client ID**</mark>, for example <mark style="color:yellow;">myapp</mark>, click on **next**.
 7. Make sure **Client authentication** is off and that **Standard Flow** is checked in, click **next**.
 8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>**oidc-callback.htm** and **http://localhost:\<DEV\_PORT>/oidc-callback.htm**.
-   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or _https://**app.**&#x6D;y-company.com_. _Note that in order to avoid issues related to_ [_the end of third party cookies_](end-of-third-party-cookies.md) _it's important that <mark style="color:orange;">\<APP\_DOMAIN></mark> and <mark style="color:blue;">\<KC\_DOMAIN></mark> be hosted under the same root domain (my-company.com)._
+   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or _https://**app.**&#x6D;y-company.com_. _Note that in order to avoid issues related to_ [_the end of third party cookies_](end-of-third-party-cookies.md) _it's important that_ <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> _and_ <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> _be hosted under the same root domain (**my-company.com**)._
    2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
    3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
    4. If you are not using using the **oidc-callbak.htm** file, remove the **/oidc-callback.htm** portion of the urls, there should be no trailing slashes at the end.
