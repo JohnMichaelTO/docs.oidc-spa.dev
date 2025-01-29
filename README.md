@@ -5,7 +5,7 @@ icon: sign-posts-wrench
 # Installation
 
 {% hint style="danger" %}
-I just released oidc-spa v6. If you are new, wait a few hours to make sure everything is ok before trying it out!
+I just released oidc-spa v6. If you are new, wait a few hours so that I can complete the new documentation :)
 {% endhint %}
 
 {% hint style="info" %}
@@ -55,7 +55,7 @@ Create the **oidc-callback.**[**htm**](#user-content-fn-1)[^1] file in your **pu
 <body>
     <!-- oidc-spa file. Do not remove, do not edit -->
     <script>
-        const authResponse = {}; for (const [key, value] of new URL(location.href).searchParams) { authResponse[key] = value; } const { data } = JSON.parse(localStorage.getItem(`oidc.${authResponse.state}`)); if (data.isSilentSso) { parent.postMessage(authResponse, location.origin); } else { const redirectUrl = new URL(data.redirectUrl); for (const [key, value] of Object.entries(authResponse)) { redirectUrl.searchParams.set(`oidc-spa.${key}`, value); } location.replace(redirectUrl.href); }
+        if (localStorage.getItem("oidc-spa.callback-file-version") !== "1") { alert("Your oidc-callback.htm file is outdated. Please update it. https://docs.oidc-spa.dev/v/v6"); } document.addEventListener("visibilitychange", ()=> { if (document.visibilityState === "visible") { location.reload(); } }); const authResponse = {}; for (const [key, value] of new URL(location.href).searchParams) { authResponse[key] = value; } const stateJson = localStorage.getItem(`oidc.${authResponse.state}`); if( stateJson === null ){ const KEY = "oidc-spa.has-navigated-back"; if( sessionStorage.getItem(KEY) === "true" ){ sessionStorage.removeItem(KEY); history.forward(); }else{ sessionStorage.setItem(KEY, "true"); history.back(); } } const { data } = JSON.parse(stateJson); if (data.isSilentSso) { parent.postMessage(authResponse, location.origin); } else { const redirectUrl = new URL(data.redirectUrl); for (const [key, value] of Object.entries(authResponse)) { redirectUrl.searchParams.set(`oidc-spa.${key}`, value); } location.replace(redirectUrl.href); }
     </script>
 </body>
 </html>
