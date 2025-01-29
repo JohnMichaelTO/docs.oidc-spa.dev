@@ -13,6 +13,7 @@ git clone https://github.com/keycloakify/oidc-spa
 mv oidc-spa/examples/react-router oidc-spa-react-router
 rm -rf oidc-spa
 cd oidc-spa-react-router
+cp .env.local.sample .env.local
 yarn
 yarn dev
 ```
