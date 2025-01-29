@@ -4,11 +4,25 @@ icon: sliders
 
 # Keycloak Configuration
 
+oidc-spa need to two parameter to connect with your Keycloak instance, the issuerUri and the clientId.
+
+### issuerUri
+
+In Keycloak, the OIDC issuer uri is formatted as such:
+
+**https://**<mark style="color:blue;">**\<DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/realms/**<mark style="color:green;">**\<REALM\_NAME>**</mark>
+
+* <mark style="color:blue;">**\<DOMAIN>**</mark>: The domain of your Keycloak server, example: **auth.my-company.com**. _Note that in order to avoid issues related to the end of third party cookies it's important that your app and your keycloak server be hosted under the same root domain (my-company.com)._ [_Learn more_](end-of-third-party-cookies.md)_._
+* <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The sub path under your which your Keycloak is hosted. By default, in recent version of keycloak it's "" (empty string). On older Keycloak version it used to be "**/auth**" by default. Check how you Keycloak server is configured. This parrameter is usualy set by an environement variable. Example `-e KC_HTTP_RELATIVE_PATH=/auth`.
+* <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm. Example: **myrealm**. One important note is that you should always create create a realm for your organization and **never use the master realm**. To create a realm navigate to **https://**<mark style="color:blue;">**\<DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console** login as an administrator, click on [the select at the top left corner of the page](https://github.com/user-attachments/assets/3761894d-486d-4157-af32-d9c2a4c78260), click on "Create a new Realm", give it <mark style="color:green;">a name</mark>, save.&#x20;
+
+### clientId
 
 
-### Configuring your Keycloak server
 
-Let's configure your Keycloak server with good default for an SPA.
+
+
+
 
 Connect to the admin panel of your Keycloak server (we assumes it's https://auth.my-domain.net/auth)
 
