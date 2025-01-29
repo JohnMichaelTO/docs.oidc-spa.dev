@@ -5,7 +5,7 @@ icon: file-user
 # User Account Management
 
 {% hint style="info" %}
-In this section we assume the reader is using Keycloak. If you are using another kind of authentication server you'll have to addapt the queryParameter provided.
+In this section we assume you are using Keycloak. If you are using another authentication server you'll have to addapt the `queryParameter` provided.
 {% endhint %}
 
 When your user is logged in, you can provide a link to redirect to Keycloak so they can manage their account.
@@ -57,7 +57,7 @@ if( oidc.isUserLoggedIn ){
 ```tsx
 function ProtectedPage() {
     // Here we can safely assume that the user is logged in.
-    const { goToAuthServer, backFromAuthServer } = useOidc({ assertUserLoggedIn: true });
+    const { goToAuthServer, backFromAuthServer } = useOidc({ assert: "user logged in" });
 
     return (
         <>
