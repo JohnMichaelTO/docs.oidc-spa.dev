@@ -21,7 +21,7 @@ In Keycloak, the OIDC issuer uri is formatted as such:
 
 **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/realms/**<mark style="color:green;">**\<REALM\_NAME>**</mark>
 
-* <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain of your Keycloak server, example: **auth.my-company.com**. _Note that in order to avoid issues related to the end of third party cookies it's important that your app and your keycloak server be hosted under the same root domain (my-company.com)._ [_Learn more_](end-of-third-party-cookies.md)_._
+* <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain of your Keycloak server, example: **auth.my-company.com**.
 * <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The sub path under your which your Keycloak is hosted. By default, in recent version of keycloak it's "" (empty string). On older Keycloak version it used to be "**/auth**" by default. Check how you Keycloak server is configured. This parrameter is usualy set by an environement variable. Example `-e KC_HTTP_RELATIVE_PATH=/auth`.
 * <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm. Example: **myrealm**. One important note is that you should always create create a realm for your organization and **never use the master realm**. To create a realm navigate to **https://**<mark style="color:blue;">**\<DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console** login as an administrator, click on [the select at the top left corner of the page](https://github.com/user-attachments/assets/3761894d-486d-4157-af32-d9c2a4c78260), click on "Create a new Realm", give it <mark style="color:green;">a name</mark>, save.&#x20;
 
@@ -37,7 +37,7 @@ The  client it is usualy something like '<mark style="color:yellow;">myapp</mark
 6. Fill in the <mark style="color:yellow;">**Client ID**</mark>, for example <mark style="color:yellow;">myapp</mark>, click on **next**.
 7. Make sure **Client authentication** is off and that **Standard Flow** is checked in, click **next**.
 8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>**oidc-callback.htm** and **http://localhost:\<DEV\_PORT>/oidc-callback.htm**.
-   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: _https://my-company.com_ or _https://**app.**&#x6D;y-company.com_.
+   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or _https://**app.**&#x6D;y-company.com_. _Note that in order to avoid issues related to_ [_the end of third party cookies_](end-of-third-party-cookies.md) _it's important that <mark style="color:orange;">\<APP\_DOMAIN></mark> and <mark style="color:blue;">\<KC\_DOMAIN></mark> be hosted under the same root domain (my-company.com)._
    2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
    3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
    4. If you are not using using the **oidc-callbak.htm** file, remove the **/oidc-callback.htm** portion of the urls, there should be no trailing slashes at the end.
