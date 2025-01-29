@@ -1,17 +1,15 @@
 # Table of contents
 
-## Documentation
-
 * [Installation](README.md)
-* [Basic Usage](documentation/usage.md)
-* [Web API](documentation/web-api.md)
-* [Auto Logout](documentation/auto-logout.md)
-* [Error Management](documentation/error-management.md)
-* [Mock](documentation/mock.md)
-* [Tokens Renewal](documentation/tokens-renewal.md)
-* [Globally Enforce Authentication](documentation/globally-enforce-authentication.md)
-* [User Account Management](documentation/user-account-management.md)
-* [Doing Something Only When a New Session is Created](documentation/doing-something-only-when-a-new-session-is-created.md)
+* [Basic Usage](usage.md)
+* [Web API](web-api.md)
+* [Auto Logout](auto-logout.md)
+* [Auto Login](auto-login.md)
+* [Error Management](error-management.md)
+* [Mock](mock.md)
+* [User Account Management](user-account-management.md)
+* [User Session Initialization](user-session-initialization.md)
+* [Tokens Renewal](tokens-renewal.md)
 
 ## Example setups
 
