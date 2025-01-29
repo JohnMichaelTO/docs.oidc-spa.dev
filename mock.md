@@ -26,6 +26,8 @@ const decodedIdTokenSchema = z.object({
 const oidc = !import.meta.env.VITE_OIDC_ISSUER
 <strong>    ? await createMockOidc({
 </strong><strong>          isUserInitiallyLoggedIn: false,
+</strong><strong>          // This is only so we know where to redirect when 
+</strong><strong>          // you call `logout({ redirectTo: "home" })`
 </strong><strong>          homeUrl: import.meata.env.BASE_URL,
 </strong><strong>          mockedTokens: {
 </strong><strong>              decodedIdToken: {
@@ -59,6 +61,8 @@ export const { OidcProvider, useOidc, getOidc } =
     !import.meta.env.VITE_OIDC_ISSUER ?
 <strong>        createMockReactOidc({
 </strong><strong>            isUserInitiallyLoggedIn: false,
+</strong><strong>            // This is only so we know where to redirect when 
+</strong><strong>            // you call `logout({ redirectTo: "home" })`
 </strong><strong>            homeUrl: import.meta.env.BASE_URL,
 </strong><strong>            mockedTokens: {
 </strong><strong>                decodedIdToken: {
