@@ -36,14 +36,11 @@ The  client it is usualy something like '<mark style="color:yellow;">myapp</mark
 5. Click on **Create Client**.
 6. Fill in the <mark style="color:yellow;">**Client ID**</mark>, for example <mark style="color:yellow;">myapp</mark>, click on **next**.
 7. Make sure **Client authentication** is off and that **Standard Flow** is checked in, click **next**.
-8.  Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>**/oidc-callback.htm** and **http://localhost:\<DEV\_PORT>/oidc-callback.htm**.
-
-    1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: _https://my-company.com_ or _https://**app.**&#x6D;y-company.com_.
-    2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
-    3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
-    4. If you are not using using the oidc-callbak.htm file, remove the /oidc-callback.htm portion, there should be no trailing slashes at the end.
-
-
+8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>**oidc-callback.htm** and **http://localhost:\<DEV\_PORT>/oidc-callback.htm**.
+   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: _https://my-company.com_ or _https://**app.**&#x6D;y-company.com_.
+   2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
+   3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
+   4. If you are not using using the **oidc-callbak.htm** file, remove the **/oidc-callback.htm** portion of the urls, there should be no trailing slashes at the end.
 9. Feel free to fill in the other field but they are not required. Click **Save**, you're done!
 
 ## Session lifespawn configuration
