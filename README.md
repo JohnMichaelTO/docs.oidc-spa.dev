@@ -5,7 +5,7 @@ icon: sign-posts-wrench
 # Installation
 
 {% hint style="info" %}
-Before starting be aware that oidc-spa is not suited for Next.js or any other framwork that involves server side rendering. This porject is tailored for client side web applications.
+Before starting be aware that oidc-spa is not suited for Next.js or any other framwork that involves server side rendering.
 
 If you are using Next the closer alternative is to use [NextAuth.js](https://next-auth.js.org/) (with [the Keycloak adapter](https://next-auth.js.org/providers/keycloak) if you are using Keycloak). See [this guide](https://phasetwo.io/docs/securing-applications/next/).
 {% endhint %}
@@ -83,7 +83,7 @@ Example: **https://my-app.com** or https//my-app.com/dashboard and **http://loca
 
 </details>
 
-[^1]: Yes .htm and not .html.\
+[^1]: Yes **.htm** and not **.html**.\
     Some web server such as [serve](https://github.com/vercel/serve#readme) will rewrite `/silent-sso.html` to `/silent-sso` and serve the `index.html` of your distribution.\
     Using the `.htm` extention prevend any potential issue.
 
