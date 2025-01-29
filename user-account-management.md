@@ -14,7 +14,7 @@ There is thee main actions:
 
 * **UPDATE\_PASSWORD**: Enables the user to change their password.
 * **UPDATE\_PROFILE**: Enable the user to edit teir account information such as first name, last name, email, and any additional user profile attribute that  you might have configured on your Keycloak server.
-* **delete\_account**: (In lower case): This enables the user to delete he's account. You must enable it manually on your Keycloak server Admin console. See [Keycloak Configuration Guide](../resources/usage-with-keycloak.md).
+* **delete\_account**: (In lower case): This enables the user to delete he's account. You must enable it manually on your Keycloak server Admin console. See [Keycloak Configuration Guide](resources/keycloak-configuration.md).
 
 Let's, as an example, how you would implement an update password button:
 

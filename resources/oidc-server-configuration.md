@@ -8,8 +8,8 @@ icon: sliders
 
 We have specific configuration instructions for the following Auth Software:
 
-{% content-ref url="usage-with-keycloak.md" %}
-[usage-with-keycloak.md](usage-with-keycloak.md)
+{% content-ref url="keycloak-configuration.md" %}
+[keycloak-configuration.md](keycloak-configuration.md)
 {% endcontent-ref %}
 
 {% content-ref url="ory-hydra-configuration.md" %}
