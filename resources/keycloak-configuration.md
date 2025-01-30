@@ -45,63 +45,60 @@ The  client it is usualy something like '<mark style="color:yellow;">myapp</mark
 
 ## Session lifespawn configuration
 
-One important policy you want to define is how often you want your user to have to authenticate again when they visite your site.&#x20;
+One important policy you want to define is how often you want your user to have to authenticate again when they visite your site. \
+\
+Note that the parameter that we will configure here do not affect the lifespawn of the access token that remains 5 minuts by default. What we are tweaking here is for how long Keycloak will keep the session active and that is reflected in the livespawn of the reflesh token,  this how oidc-spa is able to learn about it.&#x20;
 
 Let's see the good defaults for the two more common scenario:
 
 ### Sensitive apps like Banking, Admin pannels ect...
 
+For thoses kind of web applications, you want the user to have to login again each time they visit your app. You also want them to be automatically loged out after [a period of inactivity](#user-content-fn-1)[^1].
 
+To enforce this policy you want to:
 
+* Disable the  "Remeber Me" checkbox when logging in:
+  * Select <mark style="color:green;">your realm</mark>
+  * In the left menu navigate to realm settings
+  * Go to the Login tab
+  * Set "Remember Me" to Off
+* Set the session Idle time:&#x20;
+  * &#x20;In the Realm settings go to the Session Tab
+  * Set Session idle: 5min&#x20;
+  * Session idle MAX: 14 days, if your user is actively using your app for days, there's no reason to desconect them.&#x20;
 
+You can display a coundown timer before auto logout with:&#x20;
 
+{% content-ref url="../auto-logout.md" %}
+[auto-logout.md](../auto-logout.md)
+{% endcontent-ref %}
 
+### Non sensitive app like ecomerce boutique or social media app
 
+For thoses kind of app you don't want your user to have to authenticate every other day. Take YouTube for example, each time you reach the site your logged in already, we want this type of behaviour. &#x20;
 
+To enable it&#x20;
 
+* Enable the possibility for your user to check a "Remeber Me" checkbox when logging in:
+  * Select <mark style="color:green;">your realm</mark>
+  * In the left menu navigate to realm settings
+  * Go to the Login tab
+  * Set "Remember Me" to On
+* Set the session idle: You want the users that haven't checked "Remember Me" to have to re authenticate once every 2 week.&#x20;
+  * &#x20;In the Realm settings go to the Session Tab
+  * Set Session idle and Session Idle Max to  14 days
+* Set the session idle Remember Me: You want the users that have explicitely checked "Remeber Me" when logging in to only have to authenticate again once every year.
+  * In the Session tab of the Realm settings, set Session idle Remeber Me and Session Idle Max Remember me to 356 days.
 
+## Enabling user to delete their own account
 
-Connect to the admin panel of your Keycloak server (we assumes it's https://auth.my-domain.net/auth)
+By default on Keycloak, users are not allowed to delete their accout. &#x20;
 
-* Create a realm called "myrealm" (or something else), go to **Realm settings**
-  1. On the tab General
-     1. _User Profile Enabled_: **On**
-  2. On the tab **login**
-     1. _User registration_: **On**
-     2. _Forgot password_: **On**
-     3. _Remember me_: **On**, or **Off** if you want to implement [auto logout](../auto-logout.md).
-  3. On the tab **email,** we give an example with [AWS SES](https://aws.amazon.com/ses/), if you don't have a SMTP server at hand you can skip this by going to **Authentication** (on the left panel) -> Tab **Required Actions** -> Uncheck "set as default action" **Verify Email**. Be aware that with email verification disable, anyone will be able to sign up to your service.
-     1. _From_: **noreply@my-domain.net**
-     2. _Host_: **email-smtp.us-east-2.amazonaws.com**
-     3. _Port_: **465**
-     4. _Authentication_: **enabled**
-     5. _Username_: **\*\*\*\*\*\*\*\*\*\*\*\*\*\***
-     6. _Password_: **\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\***
-     7. When clicking "save" you'll be asked for a test email, you have to provide one that correspond **to a pre-existing user** or you will get a silent error and the credentials won't be saved.
-  4. On the tab Themes. See [Keycloakify](https://www.keycloakify.dev/) for creating a Keycloak theme that match your webapp.
-  5. On the tab **Localization**
-     1. _Internationalization_: **Enabled**
-     2. _Supported locales_: \<Select the languages you wish to support>
-  6. On the tab **Sessions**
-     1. SSO Session Idle: **14 days** - This is where you configure the [auto logout](../auto-logout.md) policy. This parameter defines the lifespawn of the refresh token. If you want your user to be automatically loged out after **30 minutes** of inactivity, Inacivity meaning they are not actively interacting with your app by scrolling, moving the mouse or typing, then you want to set this to **30 minutes**.
-     2. SSO Session Max: **14 days** - Even if you implement [auto logout](../auto-logout.md) you want to leave this to at least one day. Indeed as long as your users are actively interacting with your app they should remain logged in\*\*.\*\*
-     3. SSO Session Idle Remember Me: **365 days** - Same than SSO Session Idle but when the user have checked "Remember me" when login in. If you have enaled "remeber me" and you want this option to make sens you must set it to a value that is greater than SSO Session Idle. If you have set SSO Session Idle to something short because you want to implement an auto logout policy you probably want to go in Realm -> login and disable "Remember me"
-     4. SSO Session Max Remember Me: **365 days** - Same note here.
-* Create a new OpenID Connect client called "myclient" (or something else) by accessing Clients -> Create Client
-  1. _Valid redirect URIs_: **https://onyxia.my-domain.net/oidc-callback.htm, http://localhost\* (for testing in local)**
-* (OPTIONAL) On the left pannel you can go to identity provider to enable login via Google, GitHub, Instagram, ect...
-* (OPTIONAL) Enable your user to delete their own account (see [user account managment](../user-account-management.md))
-  1. In the left bar navigate to **Autentication** -> **Required Action** -> "**Delete Account**" Enabled: **On**
-  2. In the left bar navigate to **Realm Setting** -> **User Registration** -> **Default Roles** -> **Assign Role** -> **Filter by client** -> select **Delete Account** and click on assign.
+If you try to implement [a delete account button](../user-account-management.md), when clicking on it, your users will be granted with an "action non permited" screen. &#x20;
 
-{% hint style="success" %}
-Now the parameter that you will have to provide to oidc-spa are:
+To enable it:&#x20;
 
-```
-    issuerUri: "https://auth.your-domain.net/realms/myrealm",
-    clientId: "myclient"
-```
+1. In the left bar navigate to **Autentication** -> **Required Action** -> "**Delete Account**" Enabled: **On**
+2. In the left bar navigate to **Realm Setting** -> **User Registration** -> **Default Roles** -> **Assign Role** -> **Filter by client** -> select **Delete Account** and click on assign.
 
-Replace `your-domain.net`, `myrealm` and `myclient` by what you actually used in the configuration process.\
-(On older Keycloak the issuerUri will be "https://auth.your-domain.net/**auth**/realms/myrealm")
-{% endhint %}
+[^1]: A user is considered inactive by oidc-spa if the browser tab of your web app isn't focused or if the tab is focused but he not actively interacting with the app: moving the mouse, typing on keyboard or touching the screen.
