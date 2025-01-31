@@ -5,7 +5,7 @@ icon: sign-posts-wrench
 # Installation
 
 {% hint style="danger" %}
-I just released oidc-spa v6. If you are new, wait a few hours so that I can complete the new documentation :)
+There are known issues with the v6 of oidc-spa. I'm actively working on it.
 {% endhint %}
 
 {% hint style="info" %}
