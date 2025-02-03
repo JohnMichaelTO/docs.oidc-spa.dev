@@ -52,12 +52,14 @@ Create the **oidc-callback.**[**htm**](#user-content-fn-1)[^1] file in your **pu
 ```html
 <!doctype html>
 <html>
+
 <body>
     <!-- oidc-spa file. Do not remove, do not edit -->
     <script>
-        if (localStorage.getItem("oidc-spa.callback-file-version") !== "2") { alert("Your oidc-callback.htm file is outdated. Please update it. https://docs.oidc-spa.dev/v/v6"); } const authResponse = {}; for (const [key, value] of new URL(location.href).searchParams) { authResponse[key] = value; } const reloadOnRestore = ()=> { const listener = ()=> { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", listener); location.reload(); } }; document.addEventListener("visibilitychange", listener); }; const stateJson = localStorage.getItem(`oidc.${authResponse.state}`); if (!stateJson || stateJson === "null") { reloadOnRestore(); const KEY = "oidc-spa.has-navigated-back"; if (sessionStorage.getItem(KEY) === "true") { sessionStorage.removeItem(KEY); history.forward(); } else { sessionStorage.setItem(KEY, "true"); history.back(); } } const { data } = JSON.parse(stateJson); if (data.isSilentSso) { parent.postMessage(authResponse, location.origin); } else { reloadOnRestore(); const redirectUrl = new URL(data.redirectUrl); for (const [key, value] of Object.entries(authResponse)) { redirectUrl.searchParams.set(`oidc-spa.${key}`, value); } location.href = redirectUrl.href; }
+        if (localStorage.getItem("oidc-spa.callback-file-version") !== "3") { alert("Your oidc-callback.htm file is outdated. Please update it. https://docs.oidc-spa.dev/v/v6"); } const reloadOnRestore = () => { const listener = () => { if (document.visibilityState === "visible") { document.removeEventListener("visibilitychange", listener); location.reload(); } }; document.addEventListener("visibilitychange", listener); }; main: { const authResponse = {}; for (const [key, value] of new URL(location.href).searchParams) { authResponse[key] = value; } const data = (() => { const KEY = `oidc.${authResponse.state}`; const json = sessionStorage.getItem(KEY); if (json === null) { return undefined; } const obj = JSON.parse(json); if (obj.data.hasBeenProcessedByCallback) { return undefined; } obj.data.hasBeenProcessedByCallback = true; sessionStorage.setItem(KEY, JSON.stringify(obj)); return obj.data; })(); const BACK_NAVIGATION_TRACKER_KEY = "oidc-spa.has-navigated-back"; if (data === undefined) { reloadOnRestore(); if (sessionStorage.getItem(BACK_NAVIGATION_TRACKER_KEY) === "true") { sessionStorage.removeItem(BACK_NAVIGATION_TRACKER_KEY); history.forward(); } else { sessionStorage.setItem(BACK_NAVIGATION_TRACKER_KEY, "true"); history.back(); } break main; } if (data.isSilentSso) { parent.postMessage(authResponse, location.origin); } else { reloadOnRestore(); sessionStorage.removeItem(BACK_NAVIGATION_TRACKER_KEY); sessionStorage.setItem(`oidc-spa.authResponse`, JSON.stringify(authResponse)); location.href = data.redirectUrl; } }
     </script>
 </body>
+
 </html>
 ```
 {% endcode %}
