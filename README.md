@@ -5,7 +5,8 @@ icon: sign-posts-wrench
 # Installation
 
 {% hint style="danger" %}
-There are known issues with the v6 of oidc-spa. I'm actively working on it.
+Sorry, oidc-spa is in transitory state. V6 ain't fully ready yet and it would be a shame starting to use v5 now.  \
+Come back in a few hours/days
 {% endhint %}
 
 {% hint style="info" %}
