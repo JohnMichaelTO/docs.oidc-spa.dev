@@ -10,6 +10,9 @@ Run it locally with: &#x20;
 
 ```bash
 git clone https://github.com/keycloakify/oidc-spa
+cd oidc-spa
+git checkout v5.7.0
+cd ..
 mv oidc-spa/examples/react-router oidc-spa-react-router
 rm -rf oidc-spa
 cd oidc-spa-react-router
