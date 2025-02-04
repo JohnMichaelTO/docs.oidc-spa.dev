@@ -25,9 +25,6 @@
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Discord Server](resources/discord-server.md)
-* [Migration Guides](resources/migration-guides/README.md)
-  * [v5 -> v6](resources/migration-guides/v5-greater-than-v6.md)
-  * [v4 -> v5](resources/migration-guides/v4-greater-than-v5.md)
 
 ***
 

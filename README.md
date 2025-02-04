@@ -42,6 +42,3 @@ bun add oidc-spa
 ```
 {% endtab %}
 {% endtabs %}
-
-In your OIDC server configuration, the Valid Redirect URI is the home of your web application.
-
