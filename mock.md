@@ -39,7 +39,7 @@ const oidc = !import.meta.env.VITE_OIDC_ISSUER
 </strong>    : await createOidc({
           issuerUri: import.meta.env.VITE_OIDC_ISSUER,
           clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-          BASE_URL: import.meta.env.BASE_URL,
+          homeUrl: import.meta.env.BASE_URL,
           decodedIdTokenSchema
       });
 </code></pre>
@@ -74,7 +74,7 @@ export const { OidcProvider, useOidc, getOidc } =
 </strong>        createReactOidc({
             issuerUri: import.meta.env.VITE_OIDC_ISSUER,
             clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
-            BASE_URL: import.meta.env.BASE_URL,
+            homeUrl: import.meta.env.BASE_URL,
             decodedIdTokenSchema
         });
 </code></pre>
