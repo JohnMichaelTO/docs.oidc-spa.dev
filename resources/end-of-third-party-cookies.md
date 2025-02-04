@@ -31,6 +31,8 @@ Let's see how third party cookies phase out will affect you:&#x20;
 * You will see a console warning "Third-party cookie will be blocked" in the console in production. &#x20;
 * If a user that is authenticated close the tab of your app or close the browser and open your site again a while later. With third party cookies enabled and assuming he's session haven't expired yet he will be automaticall logged in. With third party cookies disabled your website will load in unautenticated mode. If he clicks on the login button this will trigger a full reload and he will be authenticated without having to enter he's credential again.   &#x20;
 
+Note that if you use Firefox to develop your application on localhost, third party cookies are blocked, so you will experience more reloads. Fear not, this won't be the case in production. &#x20;
+
 Conex resources: &#x20;
 
 {% embed url="https://github.com/keycloak/keycloak/issues/25990" %}

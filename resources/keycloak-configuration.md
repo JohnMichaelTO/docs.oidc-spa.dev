@@ -36,24 +36,25 @@ The  client it is usualy something like '<mark style="color:yellow;">myapp</mark
 5. Click on **Create Client**.
 6. Fill in the <mark style="color:yellow;">**Client ID**</mark>, for example <mark style="color:yellow;">myapp</mark>, click on **next**.
 7. Make sure **Client authentication** is _off_ and that **Standard Flow** is checked in, click **next**.
-8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>**oidc-callback.htm** and **http://localhost:\<DEV\_PORT>/oidc-callback.htm**.
+8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark> and **http://localhost:\<DEV\_PORT>/** (make sure both urls have ends with a `/`).
    1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or _https://**app.**&#x6D;y-company.com_. _Note that in order to avoid issues related to_ [_the end of third party cookies_](end-of-third-party-cookies.md) _it's important that_ <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> _and_ <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> _be hosted under the same root domain (**my-company.com**)._
    2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
    3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
-   4. If you are not using using the **oidc-callbak.htm** file, remove the **/oidc-callback.htm** portion of the urls, there should be no trailing slashes at the end.
 9. Feel free to fill in the other field but they are not required. Click **Save**, you're done!
 
 ## Session lifespawn configuration
 
-One important policy you want to define is how often you want your user to have to authenticate again when they visite your site. \
-\
-Note that the parameter that we will configure here do not affect the lifespawn of the access token that remains 5 minuts by default. What we are tweaking here is for how long Keycloak will keep the session active and that is reflected in the livespawn of the reflesh token,  this how oidc-spa is able to learn about it.&#x20;
+One important policy you want to define is how often you want your user to have to authenticate again when they visite your site.&#x20;
+
+{% hint style="info" %}
+Note that the parameter that we will configure here do not affect the lifespawn of the access token that remains 5 minuts by default. What we are tweaking here is for how long Keycloak will [keep the session active](#user-content-fn-1)[^1].&#x20;
+{% endhint %}
 
 Let's see the good defaults for the two more common scenario:
 
 ### Sensitive apps like Banking, Admin pannels ect...
 
-For thoses kind of web applications, you want the user to have to login again each time they visit your app. You also want them to be automatically loged out after [a period of inactivity](#user-content-fn-1)[^1].
+For thoses kind of web applications, you want the user to have to login again each time they visit your app. You also want them to be automatically loged out after [a period of inactivity](#user-content-fn-2)[^2].
 
 To enforce this policy you want to:
 
@@ -101,4 +102,6 @@ To enable it:&#x20;
 1. In the left bar navigate to **Autentication** -> **Required Action** -> "**Delete Account**" Enabled: **On**
 2. In the left bar navigate to **Realm Setting** -> **User Registration** -> **Default Roles** -> **Assign Role** -> **Filter by client** -> select **Delete Account** and click on assign.
 
-[^1]: A user is considered inactive by oidc-spa if the browser tab of your web app isn't focused or if the tab is focused but he not actively interacting with the app: moving the mouse, typing on keyboard or touching the screen.
+[^1]: This duration defines the lifespawn of **the refresh token**.
+
+[^2]: A user is considered inactive by oidc-spa if the browser tab of your web app isn't focused or if the tab is focused but he not actively interacting with the app: moving the mouse, typing on keyboard or touching the screen.

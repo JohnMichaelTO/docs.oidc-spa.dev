@@ -1,13 +1,16 @@
 ---
-description: Let's get your App authenticated!
 icon: flag-checkered
+description: Let's get your App authenticated!
 ---
 
 # Basic Usage
 
-{% hint style="info" %}
-In this section we assume that you have access to an OIDC Server, [that you have created and configured an OIDC client for your application](../resources/oidc-server-configuration.md) and that you have a hold on your issuer uri and client id. &#x20;
-{% endhint %}
+Before getting started, you need to get a hold on the two parameters required to connect to your OIDC server, the **issuerUri** and the **clientId**.  \
+Find instruction on how to configure your OIDC server on the following documentation page:
+
+{% content-ref url="resources/oidc-server-configuration.md" %}
+[oidc-server-configuration.md](resources/oidc-server-configuration.md)
+{% endcontent-ref %}
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -22,7 +25,7 @@ const oidc = await createOidc({
      * CRA:   `publicUrl: process.env.PUBLIC_URL`
      * Other: `publicUrl: "/"` (Usually)
      */
-    BASE_URL: import.meta.env.BASE_URL
+    homeUrl: import.meta.env.BASE_URL
 });
 
 if (!oidc.isUserLoggedIn) {
@@ -105,8 +108,8 @@ if (!oidc.isUserLoggedIn) {
 This piece of code should give you the necessary information to understand how oidc-spa can be used inside your react components.  \
 To go further you can refer to the examples setup to see how to integrate oidc-spa with your routing library: &#x20;
 
-* [react-router-dom example setup](../example-setups/react-router.md)
-* [@tanstack/react-router example setup](../example-setups/tanstack-router.md)
+* [react-router-dom example setup](example-setups/react-router.md)
+* [@tanstack/react-router example setup](example-setups/tanstack-router.md)
 
 ```tsx
 import { createReactOidc } from "oidc-spa/react";
@@ -120,7 +123,7 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
      * CRA:   `publicUrl: process.env.PUBLIC_URL`
      * Other: `publicUrl: "/"` (Usually)
      */
-    BASE_URL: import.meta.env.BASE_URL
+    homeUrl: import.meta.env.BASE_URL
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

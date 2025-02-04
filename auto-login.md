@@ -44,22 +44,15 @@ const oidc = await createOidc({
 {% endtab %}
 
 {% tab title="React API" %}
-{% code title="src/oidc.ts" %}
-```typescript
-import { createReactOidc } from "oidc-spa/react";
+<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
 
-export const {
-    OidcProvider,
-    useOidc,
-    prOidc
-} = createReactOidc({
+export const { OidcProvider, useOidc } = createReactOidc({
    // ...
-   autoLogin: true,
-   // Optional, the default value is: location.href (here)
-   // postLoginRedirectUrl: "/dashboard"
-});
-```
-{% endcode %}
+<strong>   autoLogin: true,
+</strong><strong>   // Optional, the default value is: location.href (here)
+</strong><strong>   // postLoginRedirectUrl: "/dashboard"
+</strong>});
+</code></pre>
 
 {% code title="src/main.tsx" %}
 ```tsx

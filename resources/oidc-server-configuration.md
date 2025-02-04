@@ -26,13 +26,11 @@ If you are using another OIDC Provider, no problem keep reading.
 
 Here are the key takeways for configuring.
 
-* Create a OpenID Connect client with Standard Flow AKA Authorization code flow. It's the default setting.
+* Create a OpenID Connect client with **Standard Flow** also refered to as **Authorization code flow**. It's usualy the default setting.
 * Disable client authentication (public client). We don't want to rely on client secret, it would be instantaneously leaked by your SPA.  &#x20;
-* In the configuration of the client, you only need a single valid redirect URIs. Let's assume that the home of your page is https://my-app.com you would set https://my-app.com/oidc-callback.htm, if your app is hosted under a sub path like https://my-app.com/dashboard, use https://my-app.com/dashboard/oidc-callback.htm.  \
-  You may also want to add **http://localhost:**[**5173**](#user-content-fn-1)[^1]**/oidc-callback.htm** for local developement.
+* Valid Redirect URIs: **https://my-app.com/** and **http://localhost:5173/**
+  * The slash at the end is important
+  * If your app is hosted on a sub path like /dashboard you would set **https://my-app.com/dashboard/** and **http://localhost:5173/dashboard/**
+  * 5173 is the default port used by Vite dev server, adapt according to your setup.
 * Valid post logout redirect: Same as the Valid Redirec URIs
-* Web Ogigins: http://my-app.com, http://localhost:5173
-
-
-
-[^1]: This is the default port used by vite developement server, of course adapt to your setup.
+* Web Origins: http://my-app.com, http://localhost:5173
