@@ -24,13 +24,13 @@ In Keycloak, the OIDC issuer URI follows this format:
 
 **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/realms/**<mark style="color:green;">**\<REALM\_NAME>**</mark>
 
-- <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain where your Keycloak server is hosted (e.g., **auth.my-company.com**).
-- <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The subpath under which Keycloak is hosted. In recent versions, this is an empty string (`""`). In older versions, it was `"/auth"`.  
-  Check your Keycloak server configuration; this parameter is typically set using an environment variable:  
+* <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain where your Keycloak server is hosted (e.g., **auth.my-company.com**).
+* <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The subpath under which Keycloak is hosted. In recent versions, this is an empty string (`""`). In older versions, it was `"/auth"`.\
+  Check your Keycloak server configuration; this parameter is typically set using an environment variable:\
   Example: `-e KC_HTTP_RELATIVE_PATH=/auth`
-- <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm (e.g., **myrealm**).  
-  🔹 **Important:** Always create a dedicated realm for your organization—**never use the master realm**.  
-  To create a new realm:  
+* <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm (e.g., **myrealm**).\
+  🔹 **Important:** Always create a dedicated realm for your organization—**never use the master realm**.\
+  To create a new realm:
   1. Open **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**.
   2. Log in as an administrator.
   3. Click on the realm selector in the top-left corner.
@@ -47,67 +47,68 @@ The `clientId` is usually something like '<mark style="color:yellow;">myapp</mar
 5. Click **Create Client**.
 6. Enter a **Client ID**, for example, <mark style="color:yellow;">myapp</mark>, and click **Next**.
 7. Ensure **Client Authentication** is **off**, and **Standard Flow** is enabled. Click **Next**.
-8. Set two **Valid Redirect URIs**:  
-   - **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
-   - **http://localhost:\<DEV\_PORT>/** (ensure both URLs end with `/`)
-   - **Parameters:**
-     - <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.  
+8. Set two **Valid Redirect URIs**:
+   * **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
+   * **http://localhost:\<DEV\_PORT>/** (ensure both URLs end with `/`)
+   * **Parameters:**
+     * <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.\
        🔹 To avoid issues with [third-party cookie deprecation](end-of-third-party-cookies.md), ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**).
-     - <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
-     - **\<DEV\_PORT>**: Example: **5173** (default for Vite).
+     * <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
+     * **\<DEV\_PORT>**: Example: **5173** (default for Vite).
 9. Click **Save**, and you're done! 🎉
 
----
+***
 
 ## Session Lifespan Configuration
 
 One important policy to define is how often users need to re-authenticate when visiting your site.
 
 {% hint style="info" %}
-🔹 This configuration does **not** affect the **access token lifetime** (default: 5 minutes). It controls how long Keycloak keeps **the session active**.
+This configuration does **not** affect the **access token lifetime** (default: 5 minutes). It controls how long Keycloak keeps **the session active**.
 {% endhint %}
 
 ### 🔐 Security-Sensitive Apps (Banking, Admin Panels, etc.)
 
-For security-critical apps, users should log in **each visit** and be **logged out after inactivity**.
+For security-critical apps, users should log in **each visit** and be **logged out** [**after inactivity**](#user-content-fn-1)[^1].
 
-**Why?**  
+**Why?**\
 Users accessing sensitive applications should not remain authenticated indefinitely, especially if they step away from their device. The session idle timeout ensures automatic logout after inactivity.
 
 **Steps to enforce this policy:**
+
 1. **Disable "Remember Me"**:
-   - Select <mark style="color:green;">your realm</mark>.
-   - Navigate to **Realm Settings** → **Login**.
-   - Set **"Remember Me"** to **Off**.
+   * Select <mark style="color:green;">your realm</mark>.
+   * Navigate to **Realm Settings** → **Login**.
+   * Set **"Remember Me"** to **Off**.
 2. **Configure session timeout**:
-   - Go to **Realm Settings** → **Sessions**.
-   - Set **Session idle timeout**: `5 minutes` (ensures users are logged out after 5 minutes of inactivity).
-   - Set **Session max idle timeout**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
+   * Go to **Realm Settings** → **Sessions**.
+   * Set **Session idle timeout**: `5 minutes` (ensures users are logged out after 5 minutes of inactivity).
+   * Set **Session max idle timeout**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
 3. Optionally, display a logout countdown before automatic logout:
 
 {% content-ref url="../auto-logout.md" %}
-[Auto Logout](../auto-logout.md)
+[auto-logout.md](../auto-logout.md)
 {% endcontent-ref %}
 
----
+***
 
 ### 🛍️ Non-Sensitive Apps (E-commerce, Social Media, etc.)
 
 For apps where users should remain logged in for **weeks or months** (e.g., YouTube-style behavior):
 
 1. **Enable "Remember Me"**:
-   - Select <mark style="color:green;">your realm</mark>.
-   - Navigate to **Realm Settings** → **Login**.
-   - Set **"Remember Me"** to **On**.
+   * Select <mark style="color:green;">your realm</mark>.
+   * Navigate to **Realm Settings** → **Login**.
+   * Set **"Remember Me"** to **On**.
 2. **Configure session timeout**:
-   - Users **without** "Remember Me" will need to log in **every 2 weeks**:
-     - Set **Session idle timeout**: `14 days`.
-     - Set **Session max idle timeout**: `14 days`.
-   - Users **who checked "Remember Me"** should stay logged in for **1 year**:
-     - Set **Session idle timeout (Remember Me)**: `365 days`.
-     - Set **Session max idle timeout (Remember Me)**: `365 days`.
+   * Users **without** "Remember Me" will need to log in **every 2 weeks**:
+     * Set **Session idle timeout**: `14 days`.
+     * Set **Session max idle timeout**: `14 days`.
+   * Users **who checked "Remember Me"** should stay logged in for **1 year**:
+     * Set **Session idle timeout (Remember Me)**: `365 days`.
+     * Set **Session max idle timeout (Remember Me)**: `365 days`.
 
----
+***
 
 ## 🗑️ Allowing Users to Delete Their Own Accounts
 
@@ -116,16 +117,16 @@ By default, Keycloak **does not** allow users to delete their accounts.
 If you implement a [delete account button](../user-account-management.md), users will see an **"Action not permitted"** error.
 
 ### ✅ Enabling Account Deletion:
+
 1. Navigate to **Authentication** → **Required Actions**.
 2. Enable **"Delete Account"**.
 3. Go to **Realm Settings** → **User Registration** → **Default Roles**.
 4. Click **Assign Role**, filter by **client**, select **Delete Account**, and assign it.
 
----
+***
 
-## 📌 Notes
+[^1]: The user is considered inactive by oidc-spa when
 
-[^1]: The **refresh token lifetime** determines how long the user can stay logged in without re-authenticating.
-[^2]: A user is considered inactive if:
-   - The browser tab is **unfocused**, or  
-   - The tab is focused, but the user **isn't interacting** (no mouse movement, keyboard typing, or screen touch).
+    * The browser tab is **unfocused**, or
+
+    - The tab is focused, but the user **isn't interacting** (no mouse movement, keyboard typing, or screen touch).

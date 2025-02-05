@@ -4,11 +4,6 @@ icon: sign-posts-wrench
 
 # Installation
 
-{% hint style="danger" %}
-Sorry, oidc-spa is in transitory state. V6 ain't fully ready yet and it would be a shame starting to use v5 now.  \
-Come back in a few hours/days
-{% endhint %}
-
 {% hint style="info" %}
 Before starting be aware that oidc-spa is not suited for Next.js or any other framwork that involves server side rendering.
 
