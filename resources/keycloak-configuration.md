@@ -6,102 +6,123 @@ icon: sliders
 
 ## Getting the `issuerUri` and `clientId`
 
-Oidc-spa need to two parameter to connect with your Keycloak instance, the issuerUri and the clientId.
+`oidc-spa` requires two parameters to connect to your Keycloak instance: `issuerUri` and `clientId`.
 
-<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
-<strong>    issuerUri: "...",
-</strong><strong>    clientId: "...",
-</strong>    // ...
+{% code title="Example configuration" %}
+```typescript
+const { ... } = createOidc({
+    issuerUri: "...",
+    clientId: "...",
+    // ...
 });
-</code></pre>
+```
+{% endcode %}
 
 ### `issuerUri`
 
-In Keycloak, the OIDC issuer uri is formatted as such:
+In Keycloak, the OIDC issuer URI follows this format:
 
 **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/realms/**<mark style="color:green;">**\<REALM\_NAME>**</mark>
 
-* <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain of your Keycloak server, example: **auth.my-company.com**.
-* <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The sub path under your which your Keycloak is hosted. By default, in recent version of keycloak it's "" (empty string). On older Keycloak version it used to be "**/auth**" by default. Check how you Keycloak server is configured. This parrameter is usualy set by an environement variable. Example `-e KC_HTTP_RELATIVE_PATH=/auth`.
-* <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm. Example: **myrealm**. One important note is that you should always create create a realm for your organization and **never use the master realm**. To create a realm navigate to **https://**<mark style="color:blue;">**\<DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console** login as an administrator, click on [the select at the top left corner of the page](https://github.com/user-attachments/assets/3761894d-486d-4157-af32-d9c2a4c78260), click on "Create a new Realm", give it <mark style="color:green;">a name</mark>, save.&#x20;
+- <mark style="color:blue;">**\<KC\_DOMAIN>**</mark>: The domain where your Keycloak server is hosted (e.g., **auth.my-company.com**).
+- <mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>: The subpath under which Keycloak is hosted. In recent versions, this is an empty string (`""`). In older versions, it was `"/auth"`.  
+  Check your Keycloak server configuration; this parameter is typically set using an environment variable:  
+  Example: `-e KC_HTTP_RELATIVE_PATH=/auth`
+- <mark style="color:green;">**\<REALM\_NAME>**</mark>: The name of your realm (e.g., **myrealm**).  
+  🔹 **Important:** Always create a dedicated realm for your organization—**never use the master realm**.  
+  To create a new realm:  
+  1. Open **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**.
+  2. Log in as an administrator.
+  3. Click on the realm selector in the top-left corner.
+  4. Click **"Create a new Realm"**, give it <mark style="color:green;">a name</mark>, and save.
 
 ### `clientId`
 
-The  client it is usualy something like '<mark style="color:yellow;">myapp</mark>'. Let's see how to create a client suitable for your SPA.
+The `clientId` is usually something like '<mark style="color:yellow;">myapp</mark>'. Follow these steps to create a suitable client for your SPA:
 
-1. Connect to your Keycloak Admin Console: **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**
-2. Login as an admin
-3. Using [the select input in the top left corner](https://github-production-user-asset-6210df.s3.amazonaws.com/6702424/407624868-3761894d-486d-4157-af32-d9c2a4c78260.png?X-Amz-Algorithm=AWS4-HMAC-SHA256\&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250129%2Fus-east-1%2Fs3%2Faws4_request\&X-Amz-Date=20250129T075418Z\&X-Amz-Expires=300\&X-Amz-Signature=c39fdbbb65f30b9be70a9810c6a783e21a3bc7a6b1e6478b7c9f76430f098bfb\&X-Amz-SignedHeaders=host), navigate to <mark style="color:green;">your realm</mark>.
-4. In the left pannel click on **Clients**.
-5. Click on **Create Client**.
-6. Fill in the <mark style="color:yellow;">**Client ID**</mark>, for example <mark style="color:yellow;">myapp</mark>, click on **next**.
-7. Make sure **Client authentication** is _off_ and that **Standard Flow** is checked in, click **next**.
-8. Set two Valid Redirect URIs: **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark> and **http://localhost:\<DEV\_PORT>/** (make sure both urls have ends with a `/`).
-   1. <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or _https://**app.**&#x6D;y-company.com_. _Note that in order to avoid issues related to_ [_the end of third party cookies_](end-of-third-party-cookies.md) _it's important that_ <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> _and_ <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> _be hosted under the same root domain (**my-company.com**)._
-   2. <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: "**/**" or "**/dashboard/**".
-   3. **\<DEV\_PORT>**: Example: **5173** (Default port of the Vite dev server)
-9. Feel free to fill in the other field but they are not required. Click **Save**, you're done!
+1. Open **https://**<mark style="color:blue;">**\<KC\_DOMAIN>**</mark><mark style="color:purple;">**\<KC\_RELATIVE\_PATH>**</mark>**/admin/master/console**.
+2. Log in as an administrator.
+3. Select <mark style="color:green;">your realm</mark> from the top-left dropdown.
+4. In the left panel, click **Clients**.
+5. Click **Create Client**.
+6. Enter a **Client ID**, for example, <mark style="color:yellow;">myapp</mark>, and click **Next**.
+7. Ensure **Client Authentication** is **off**, and **Standard Flow** is enabled. Click **Next**.
+8. Set two **Valid Redirect URIs**:  
+   - **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
+   - **http://localhost:\<DEV\_PORT>/** (ensure both URLs end with `/`)
+   - **Parameters:**
+     - <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.  
+       🔹 To avoid issues with [third-party cookie deprecation](end-of-third-party-cookies.md), ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**).
+     - <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
+     - **\<DEV\_PORT>**: Example: **5173** (default for Vite).
+9. Click **Save**, and you're done! 🎉
 
-## Session lifespawn configuration
+---
 
-One important policy you want to define is how often you want your user to have to authenticate again when they visite your site.&#x20;
+## Session Lifespan Configuration
+
+Define how long users can stay logged in before re-authentication is required.
 
 {% hint style="info" %}
-Note that the parameter that we will configure here do not affect the lifespawn of the access token that remains 5 minuts by default. What we are tweaking here is for how long Keycloak will [keep the session active](#user-content-fn-1)[^1].&#x20;
+🔹 This configuration does **not** affect the **access token lifetime** (default: 5 minutes). It controls how long Keycloak keeps **the session active**.
 {% endhint %}
 
-Let's see the good defaults for the two more common scenario:
+### 🔐 Security-Sensitive Apps (Banking, Admin Panels, etc.)
 
-### Sensitive apps like Banking, Admin pannels ect...
+For security-critical apps, users should log in **each visit** and be **logged out after inactivity**.
 
-For thoses kind of web applications, you want the user to have to login again each time they visit your app. You also want them to be automatically loged out after [a period of inactivity](#user-content-fn-2)[^2].
-
-To enforce this policy you want to:
-
-* Disable the  "Remember Me" checkbox when logging in:
-  * Select <mark style="color:green;">your realm</mark>
-  * In the left menu navigate to realm settings
-  * Go to the Login tab
-  * Set "Remember Me" to Off
-* Set the session Idle time:&#x20;
-  * &#x20;In the Realm settings go to the Session Tab
-  * Set Session idle: 5min&#x20;
-  * Session idle MAX: 14 days, if your user is actively using your app for days, there's no reason to desconect them.&#x20;
-
-You can display a coundown timer before auto logout with:&#x20;
+**Steps to enforce this policy:**
+1. **Disable "Remember Me"**:
+   - Select <mark style="color:green;">your realm</mark>.
+   - Navigate to **Realm Settings** → **Login**.
+   - Set **"Remember Me"** to **Off**.
+2. **Configure session timeout**:
+   - Go to **Realm Settings** → **Sessions**.
+   - Set **Session idle timeout**: `5 minutes`.
+   - Set **Session max idle timeout**: `14 days`.
+3. Optionally, display a logout countdown before automatic logout:
 
 {% content-ref url="../auto-logout.md" %}
-[auto-logout.md](../auto-logout.md)
+[Auto Logout](../auto-logout.md)
 {% endcontent-ref %}
 
-### Non sensitive app like ecomerce boutique or social media app
+---
 
-For thoses kind of app you don't want your user to have to authenticate every other day. Take YouTube for example, each time you reach the site your logged in already, we want this type of behaviour. &#x20;
+### 🛍️ Non-Sensitive Apps (E-commerce, Social Media, etc.)
 
-To enable it&#x20;
+For apps where users should remain logged in for **weeks or months** (e.g., YouTube-style behavior):
 
-* Enable the possibility for your user to check a "Remeber Me" checkbox when logging in:
-  * Select <mark style="color:green;">your realm</mark>
-  * In the left menu navigate to realm settings
-  * Go to the Login tab
-  * Set "Remember Me" to On
-* Set the session idle: You want the users that haven't checked "Remember Me" to have to re authenticate once every 2 week.&#x20;
-  * &#x20;In the Realm settings go to the Session Tab
-  * Set Session idle and Session Idle Max to  14 days
-* Set the session idle Remember Me: You want the users that have explicitely checked "Remember Me" when logging in to only have to authenticate again once every year.
-  * In the Session tab of the Realm settings, set Session idle Remember Me and Session Idle Max Remember me to 356 days.
+1. **Enable "Remember Me"**:
+   - Select <mark style="color:green;">your realm</mark>.
+   - Navigate to **Realm Settings** → **Login**.
+   - Set **"Remember Me"** to **On**.
+2. **Configure session timeout**:
+   - Users **without** "Remember Me" will need to log in **every 2 weeks**:
+     - Set **Session idle timeout**: `14 days`.
+     - Set **Session max idle timeout**: `14 days`.
+   - Users **who checked "Remember Me"** should stay logged in for **1 year**:
+     - Set **Session idle timeout (Remember Me)**: `365 days`.
+     - Set **Session max idle timeout (Remember Me)**: `365 days`.
 
-## Enabling user to delete their own account
+---
 
-By default on Keycloak, users are not allowed to delete their accout. &#x20;
+## 🗑️ Allowing Users to Delete Their Own Accounts
 
-If you try to implement [a delete account button](../user-account-management.md), when clicking on it, your users will be granted with an "action non permited" screen. &#x20;
+By default, Keycloak **does not** allow users to delete their accounts.
 
-To enable it:&#x20;
+If you implement a [delete account button](../user-account-management.md), users will see an **"Action not permitted"** error.
 
-1. In the left bar navigate to **Autentication** -> **Required Action** -> "**Delete Account**" Enabled: **On**
-2. In the left bar navigate to **Realm Setting** -> **User Registration** -> **Default Roles** -> **Assign Role** -> **Filter by client** -> select **Delete Account** and click on assign.
+### ✅ Enabling Account Deletion:
+1. Navigate to **Authentication** → **Required Actions**.
+2. Enable **"Delete Account"**.
+3. Go to **Realm Settings** → **User Registration** → **Default Roles**.
+4. Click **Assign Role**, filter by **client**, select **Delete Account**, and assign it.
 
-[^1]: This duration defines the lifespawn of **the refresh token**.
+---
 
-[^2]: A user is considered inactive by oidc-spa if the browser tab of your web app isn't focused or if the tab is focused but he not actively interacting with the app: moving the mouse, typing on keyboard or touching the screen.
+## 📌 Notes
+
+[^1]: This defines the **lifetime of the refresh token**.
+[^2]: A user is considered inactive if:
+   - The browser tab is **unfocused**, or  
+   - The tab is focused, but the user **isn't interacting** (no mouse movement, keyboard typing, or screen touch).
