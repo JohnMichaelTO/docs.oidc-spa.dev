@@ -58,7 +58,7 @@ For thoses kind of web applications, you want the user to have to login again ea
 
 To enforce this policy you want to:
 
-* Disable the  "Remeber Me" checkbox when logging in:
+* Disable the  "Remember Me" checkbox when logging in:
   * Select <mark style="color:green;">your realm</mark>
   * In the left menu navigate to realm settings
   * Go to the Login tab
@@ -88,8 +88,8 @@ To enable it&#x20;
 * Set the session idle: You want the users that haven't checked "Remember Me" to have to re authenticate once every 2 week.&#x20;
   * &#x20;In the Realm settings go to the Session Tab
   * Set Session idle and Session Idle Max to  14 days
-* Set the session idle Remember Me: You want the users that have explicitely checked "Remeber Me" when logging in to only have to authenticate again once every year.
-  * In the Session tab of the Realm settings, set Session idle Remeber Me and Session Idle Max Remember me to 356 days.
+* Set the session idle Remember Me: You want the users that have explicitely checked "Remember Me" when logging in to only have to authenticate again once every year.
+  * In the Session tab of the Realm settings, set Session idle Remember Me and Session Idle Max Remember me to 356 days.
 
 ## Enabling user to delete their own account
 

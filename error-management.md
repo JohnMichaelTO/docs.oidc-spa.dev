@@ -52,7 +52,7 @@ import { useEffect } from "react";
 
 function LoginButton() {
 
-    const { isUserLoggedIn, login, logout initializationError } = useOidc();
+    const { isUserLoggedIn, login, logout, initializationError } = useOidc();
 
     useEffect(() => {
         if (initializationError) {
