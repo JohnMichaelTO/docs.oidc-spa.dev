@@ -61,7 +61,7 @@ The `clientId` is usually something like '<mark style="color:yellow;">myapp</mar
 
 ## Session Lifespan Configuration
 
-Define how long users can stay logged in before re-authentication is required.
+One important policy to define is how often users need to re-authenticate when visiting your site.
 
 {% hint style="info" %}
 🔹 This configuration does **not** affect the **access token lifetime** (default: 5 minutes). It controls how long Keycloak keeps **the session active**.
@@ -71,6 +71,9 @@ Define how long users can stay logged in before re-authentication is required.
 
 For security-critical apps, users should log in **each visit** and be **logged out after inactivity**.
 
+**Why?**  
+Users accessing sensitive applications should not remain authenticated indefinitely, especially if they step away from their device. The session idle timeout ensures automatic logout after inactivity.
+
 **Steps to enforce this policy:**
 1. **Disable "Remember Me"**:
    - Select <mark style="color:green;">your realm</mark>.
@@ -78,8 +81,8 @@ For security-critical apps, users should log in **each visit** and be **logged o
    - Set **"Remember Me"** to **Off**.
 2. **Configure session timeout**:
    - Go to **Realm Settings** → **Sessions**.
-   - Set **Session idle timeout**: `5 minutes`.
-   - Set **Session max idle timeout**: `14 days`.
+   - Set **Session idle timeout**: `5 minutes` (ensures users are logged out after 5 minutes of inactivity).
+   - Set **Session max idle timeout**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
 3. Optionally, display a logout countdown before automatic logout:
 
 {% content-ref url="../auto-logout.md" %}
@@ -122,7 +125,7 @@ If you implement a [delete account button](../user-account-management.md), users
 
 ## 📌 Notes
 
-[^1]: This defines the **lifetime of the refresh token**.
+[^1]: The **refresh token lifetime** determines how long the user can stay logged in without re-authenticating.
 [^2]: A user is considered inactive if:
    - The browser tab is **unfocused**, or  
    - The tab is focused, but the user **isn't interacting** (no mouse movement, keyboard typing, or screen touch).
