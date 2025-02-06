@@ -4,7 +4,7 @@ icon: arrows-rotate-reverse
 
 # Tokens Renewal
 
-You probably don't need to do it. The token refresh is handled automatically for you, however you can manually trigger a token refresh: &#x20;
+You don't need to do it. The token refresh is handled automatically for you, however you can manually trigger a token refresh: &#x20;
 
 {% tabs %}
 {% tab title="Vanilla API" %}

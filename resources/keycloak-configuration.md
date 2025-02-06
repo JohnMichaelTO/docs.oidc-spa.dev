@@ -47,14 +47,14 @@ The `clientId` is usually something like '<mark style="color:yellow;">myapp</mar
 5. Click **Create Client**.
 6. Enter a **Client ID**, for example, <mark style="color:yellow;">myapp</mark>, and click **Next**.
 7. Ensure **Client Authentication** is **off**, and **Standard Flow** is enabled. Click **Next**.
-8. Set two **Valid Redirect URIs**:
+8. Set two **Valid Redirect URIs,** ensure both URLs end with `/`:
    * **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
-   * **http://localhost:\<DEV\_PORT>/** (ensure both URLs end with `/`)
+   * **http://localhost:\<DEV\_PORT>/**
    * **Parameters:**
      * <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.\
        🔹 To avoid issues with [third-party cookie deprecation](end-of-third-party-cookies.md), ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**).
      * <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
-     * **\<DEV\_PORT>**: Example: **5173** (default for Vite).
+     * **\<DEV\_PORT>**: Example: **5173** (default for Vite's dev server, adapt to your setup).
 9. Click **Save**, and you're done! 🎉
 
 ***
@@ -116,7 +116,7 @@ By default, Keycloak **does not** allow users to delete their accounts.
 
 If you implement a [delete account button](../user-account-management.md), users will see an **"Action not permitted"** error.
 
-### ✅ Enabling Account Deletion:
+Enabling Account Deletion:
 
 1. Navigate to **Authentication** → **Required Actions**.
 2. Enable **"Delete Account"**.
@@ -125,7 +125,7 @@ If you implement a [delete account button](../user-account-management.md), users
 
 ***
 
-[^1]: The user is considered inactive by oidc-spa when
+[^1]: The user is considered inactive by oidc-spa when:
 
     * The browser tab is **unfocused**, or
 
