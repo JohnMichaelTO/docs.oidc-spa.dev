@@ -82,8 +82,8 @@ Users accessing sensitive applications should not remain authenticated indefinit
    * Set **"Remember Me"** to **Off**.
 2. **Configure session timeout**:
    * Go to **Realm Settings** → **Sessions**.
-   * Set **Session idle timeout**: `5 minutes` (ensures users are logged out after 5 minutes of inactivity).
-   * Set **Session max idle timeout**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
+   * Set **SSO Session idle**: `5 minutes` (ensures users are logged out after 5 minutes of inactivity).
+   * Set **SSO Session max idle**: `14 days` (ensures users who actively use the app don’t get logged out unnecessarily).
 3. Optionally, display a logout countdown before automatic logout:
 
 {% content-ref url="../auto-logout.md" %}
