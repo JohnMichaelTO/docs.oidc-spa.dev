@@ -4,7 +4,7 @@ icon: plug
 
 # Web API
 
-The primary usecase for a library like oidc-spa is to use it to authenticate a REST, tRPC, or Websocket API.
+The primary usecase for a library like oidc-spa is to use it to authenticate against a REST, tRPC, or Websocket API.
 
 Let's see a very basic REST API example:
 
@@ -23,7 +23,7 @@ export const prOidc = createOidc({/* ... */});
 Create a REST API Client that adds the OIDC Access Token as Autorization header to every HTTP request:
 
 <pre class="language-typescript" data-title="src/api.ts"><code class="lang-typescript">import axios from "axios";
-<strong>import { prOidc } from "oidc";
+<strong>import { prOidc } from "./oidc";
 </strong>
 type Api = {
     getTodos: () => Promise&#x3C;{ id: number; title: string; }[]>;
@@ -154,14 +154,14 @@ import { HTTPException } from "hono/http-exception";
 
 export async function createDecodeAccessToken() {
 
-    const oidcIssuerUri = process.env.OIDC_ISSUER
+    const issuerUri = process.env.OIDC_ISSUER_URI
 
-    if (oidcIssuerUri === undefined) {
-        throw new Error("OIDC_ISSUER must be defined in the environment variables")
+    if (!issuerUri) {
+        throw new Error("OIDC_ISSUER_URI must be defined in the environment variables")
     }
 
     const { verifyAndDecodeAccessToken } = await createOidcBackend({ 
-        issuerUri: oidcIssuerUri,
+        issuerUri,
         decodedAccessTokenSchema: z.object({
             sub: z.string(),
             realm_access: z.object({
@@ -244,12 +244,8 @@ import { getUserTodoStore } from "./todo";
 <strong>            const decodedAccessToken = decodeAccessToken({
 </strong><strong>                authorizationHeaderValue: c.req.header("Authorization")
 </strong><strong>            });
-</strong><strong>
-</strong><strong>            if (decodedAccessToken === undefined) {
-</strong><strong>                throw new HTTPException(401);
-</strong><strong>            }
 </strong>
-            const todos = getUserTodoStore(decodedAccessToken.sub).getAll();
+            const todos = await getUserTodoStore(decodedAccessToken.sub).getAll();
 
             return c.json(todos);
 

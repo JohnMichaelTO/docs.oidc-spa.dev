@@ -33,4 +33,4 @@ Here are the key takeways for configuring.
   * If your app is hosted on a sub path like /dashboard you would set **https://my-app.com/dashboard/** and **http://localhost:5173/dashboard/**
   * 5173 is the default port used by Vite dev server, adapt according to your setup.
 * Valid post logout redirect: Same as the Valid Redirec URIs
-* Web Origins: http://my-app.com, http://localhost:5173
+* Web Origins: **https://my-app.com**, **http://localhost:5173**

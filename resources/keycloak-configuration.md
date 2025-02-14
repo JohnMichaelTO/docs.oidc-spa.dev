@@ -49,7 +49,7 @@ The `clientId` is usually something like '<mark style="color:yellow;">myapp</mar
 7. Ensure **Client Authentication** is **off**, and **Standard Flow** is enabled. Click **Next**.
 8. Set two **Valid Redirect URIs,** ensure both URLs end with `/`:
    * **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
-   * **http://localhost:\<DEV\_PORT>/**
+   * **http://localhost:\<DEV\_PORT>**<mark style="color:red;">**\<BASE\_URL>**</mark>
    * **Parameters:**
      * <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.\
        🔹 To avoid issues with [third-party cookie deprecation](end-of-third-party-cookies.md), ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**).

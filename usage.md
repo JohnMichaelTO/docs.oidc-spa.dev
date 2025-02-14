@@ -21,9 +21,9 @@ const oidc = await createOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
-     * Vite:  `publicUrl: import.meta.env.BASE_URL`
-     * CRA:   `publicUrl: process.env.PUBLIC_URL`
-     * Other: `publicUrl: "/"` (Usually)
+     * Vite:  `homeUrl: import.meta.env.BASE_URL`
+     * CRA:   `homeUrl: process.env.PUBLIC_URL`
+     * Other: `homeUrl: "/"` (Usually)
      */
     homeUrl: import.meta.env.BASE_URL
 });
@@ -119,9 +119,9 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
     /**
-     * Vite:  `publicUrl: import.meta.env.BASE_URL`
-     * CRA:   `publicUrl: process.env.PUBLIC_URL`
-     * Other: `publicUrl: "/"` (Usually)
+     * Vite:  `homeUrl: import.meta.env.BASE_URL`
+     * CRA:   `homeUrl: process.env.PUBLIC_URL`
+     * Other: `homeUrl: "/"` (Usually)
      */
     homeUrl: import.meta.env.BASE_URL
 });
@@ -167,7 +167,7 @@ function App() {
                 //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
                 /**
                  * You can allso set where to redirect the user after 
-                 * successful login
+                 * successful login, by default it will be on the current location.
                  */
                 // redirectUrl: "/dashboard"
                 /**
@@ -224,7 +224,7 @@ function OrderHistory(){
 }
 ```
 
-If you get your OIDC parameters from an API you can passes an assync function that returns the oidc parameters. This function gets called when `<OidcProvider />` is first mounted or when `getOidc()` is first called.
+If you get your OIDC parameters from an API you can pass an assync function that returns the oidc parameters. This function gets called when `<OidcProvider />` is first mounted or when `getOidc()` is first called.
 
 ```typescript
 export const { 
@@ -236,17 +236,15 @@ export const {
     const { 
         issuerUri, 
         clientId 
-    } = await axios.get("/oidc-params").then(r => r.data);
+    } = await axios.get("/api/oidc-params").then(r => r.data);
 
     return {
         issuerUri,
         clientId,
-        publicUrl: import.meta.env.BASE_URL
+        homeUrl: import.meta.env.BASE_URL
     };
     
 });
 ```
 {% endtab %}
 {% endtabs %}
-
-xx

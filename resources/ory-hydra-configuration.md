@@ -38,7 +38,7 @@ For example, using the Hydra CLI you can run:
 ```bash
 hydra clients create \
   --id myapp \
-  --redirect-uris "https://<APP_DOMAIN><BASE_URL>,http://localhost:<DEV_PORT>/" \
+  --redirect-uris "https://<APP_DOMAIN><BASE_URL>,http://localhost:<DEV_PORT><BASE_URL>" \
   --grant-types authorization_code,refresh_token \
   --response-types code
 ```
@@ -56,9 +56,9 @@ Once registered, the client’s unique identifier (the `clientId`) will be used 
 
 ## Token Lifespan & Session Considerations
 
-Ory Hydra is a pure OAuth2/OpenID Connect server and does **not** manage user sessions or login pages directly. Instead, it issues access tokens and refresh tokens with configurable lifespans. These tokens are used by your SPA to access protected resources.
+Infer from Keycloak documentation:
 
-{% hint style="info" %}
-**Note:**\
-The **access token lifetime** is typically short (e.g., 5 minutes) to minimize security risks if a token is compromised. The **refresh token lifetime** can be longer (e.g., 14 days or more) to allow seamless re-authentication while still enforcing periodic logins.
-{% endhint %}
+{% content-ref url="keycloak-configuration.md" %}
+[keycloak-configuration.md](keycloak-configuration.md)
+{% endcontent-ref %}
+
