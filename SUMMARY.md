@@ -22,7 +22,7 @@
 * [Keycloak Configuration](resources/keycloak-configuration.md)
 * [Ory Hydra Configuration](resources/ory-hydra-configuration.md)
 * [Dex Configuration](resources/dex-configuration.md)
-* [Page](resources/page.md)
+* [Google OAuth](resources/google-oauth.md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Performance issues?](resources/performance-issues.md)
