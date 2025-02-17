@@ -5,37 +5,45 @@ description: Implement "Login with Google"
 
 # Google OAuth
 
-With oidc-spa you would usualy use an OIDC Provider like Keycloak to centralize your authentication flow and have Google configured as an identity provider in your Keycloak server so that user can select "Google" as authentication option.  \
-That being said, if you do not have a Keycloak instance it's perfectly possible to configure oidc-spa directly against google as shown in the following video: &#x20;
+With `oidc-spa`, you would typically use an OIDC Provider like Keycloak to centralize authentication and configure Google as an identity provider within Keycloak. This allows users to select "Google" as a login option.  
+
+That being said, if you don't have a Keycloak instance, you can configure `oidc-spa` directly with Google, as demonstrated in the following video:  
 
 {% embed url="https://youtu.be/d0RgnM4vXbc" %}
 
-Example configuration on the Google Cloud Console:&#x20;
+## Google Cloud Console Configuration
 
-* Navigate to google cloud platform console
-* Api and services
-* Credentials
-* Create Credentials: OAuth Client ID
-* Application type: Web Application&#x20;
-* Authorized Redirect URIs: **https://my-app.com/** and **http://localhost:5173/**
-  * The slash at the end is important
-  * If your app is hosted on a sub path like /dashboard you would set **https://my-app.com/dashboard/** and **http://localhost:5173/dashboard/**
-  * 5173 is the default port used by Vite dev server, adapt according to your setup.
-* Authorized JavaScript Origins: The origins of your redirec uris.
+To set up authentication via Google, follow these steps in the **Google Cloud Console**:
+
+1. Navigate to **Google Cloud Platform Console**.
+2. Go to **API & Services** → **Credentials**.
+3. Click **Create Credentials** → **OAuth Client ID**.
+4. Choose **Application Type: Web Application**.
+5. Set the **Authorized Redirect URIs**:
+   - **https://my-app.com/** and **http://localhost:5173/** (Ensure the trailing slash is included).
+   - If your app is hosted under a subpath (e.g., `/dashboard`), set:
+     - **https://my-app.com/dashboard/**  
+     - **http://localhost:5173/dashboard/**
+   - `5173` is Vite's default development server port—adjust as needed.
+6. Set the **Authorized JavaScript Origins** to match the origins of your redirect URIs.
 
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
-Google did a big faux pas in the design of their OAuth service by making any standard auth flow + PKCE fail if no client secret is provided!  \
-Public Clients can't store secrets, the mechanism that prevent from code interception by a third party is PKCE which is supported by Google and implemented by oidc-spa.  \
-So having PKCE + client secret makes no sense and is thourouly missleading.\
-\
-That being said rest assure that providing the client secret to oidc-spa in your frontend code, in this context, has no security repercution whatshoever it's just bad API design by the Google. &#x20;
+### Google's OAuth Design Flaw
+
+Google's OAuth implementation has a significant flaw: **PKCE-based authentication fails unless a client secret is provided**.  
+
+For public clients, storing secrets is inherently insecure. **PKCE (Proof Key for Code Exchange)** exists precisely to prevent code interception, and Google supports PKCE. **Requiring a client secret in addition to PKCE is unnecessary and misleading**.  
+
+That said, **providing the client secret in your frontend code for this specific case has no security implications**. This is purely a poor API design decision on Google's part.  
 {% endhint %}
 
+---
 
+## Implementation
 
-We should have the following code: &#x20;
+Here’s how to configure `oidc-spa` to work with Google:
 
 {% tabs %}
 {% tab title="Vanilla" %}
@@ -46,30 +54,26 @@ export const prOidc = createOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
-    // In this context you're not in trouble, it's not your fault Google
-    // forces you to provide a secret to a public client, it's on them. 
+    // You are not at fault—Google forces public clients to provide a secret.
+    // This is on them.
     __clientSecret_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: "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"
 });
-
 ```
-
-
 {% endtab %}
 
 {% tab title="React" %}
-<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
+```typescript
+import { createReactOidc } from "oidc-spa/react";
 
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
-    // In this context you're not in trouble, it's not your fault Google
-    // forces you to provide a secret to a public client, it's on them. 
-<strong>    __clientSecret_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: "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"
-</strong>});
-</code></pre>
+    // You are not at fault—Google forces public clients to provide a secret.
+    // This is on them.
+    __clientSecret_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: "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"
+});
+```
 {% endtab %}
 {% endtabs %}
-
-
 
