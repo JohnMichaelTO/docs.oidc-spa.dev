@@ -22,6 +22,7 @@
 * [Keycloak Configuration](resources/keycloak-configuration.md)
 * [Ory Hydra Configuration](resources/ory-hydra-configuration.md)
 * [Google OAuth](resources/google-oauth.md)
+* [Microsoft Entra ID: Microsoft Entrepise Account, Xbox, Skype, ...](resources/microsoft-entra-id-microsoft-entrepise-account-xbox-skype-....md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Performance issues?](resources/performance-issues.md)
