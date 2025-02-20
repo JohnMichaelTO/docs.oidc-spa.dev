@@ -1,8 +1,8 @@
 ---
+icon: microsoft
 description: >-
   Formerly Azure Active Directory, enable "Sign In with Microsoft Entreprise
   Account, Xbox, Skype, Office 360,..."
-icon: microsoft
 ---
 
 # Microsoft Entra ID: Microsoft Entrepise Account, Xbox, Skype, ...
@@ -117,7 +117,7 @@ const clientId= "2bf08137-c88d-4e92-9e1d-fcfa528294e6";
 export const prOidc = createOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
     clientId,
-    scopes: ["api://oidc/jwt-access-token"],
+    scopes: ["profile", "api://oidc/jwt-access-token"],
     homeUrl: import.meta.env.BASE_URL
 });
 ```
@@ -127,11 +127,16 @@ export const prOidc = createOidc({
 ```typescript
 import { createReactOidc } from "oidc-spa/react";
 
+// Directory (tenant) ID:
+const directoryId = "71a0a621-363a-4182-8209-86364aa6de03";
+// Application (client) ID:
+const clientId= "2bf08137-c88d-4e92-9e1d-fcfa528294e6";
+
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
-    issuerUri: "https://accounts.google.com",
-    clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
-    homeUrl: import.meta.env.BASE_URL,
-    __clientSecret: "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"
+    issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
+    clientId,
+    scopes: ["profile", "api://oidc/jwt-access-token"],
+    homeUrl: import.meta.env.BASE_URL
 });
 ```
 {% endtab %}
