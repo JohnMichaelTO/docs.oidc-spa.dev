@@ -65,7 +65,7 @@ if (!oidc.isUserLoggedIn) {
         // authenticate to your APIs
         accessToken,
         decodedIdToken
-    } = oidc.getTokens();
+    } = await oidc.getTokens_next();
 
     fetch("https://api.your-domain.net/orders", {
         headers: {
@@ -188,6 +188,24 @@ type Order = {
   name: string;
 };
 
+const fetchWithAuth: typeof fetch = async (input, init) => {
+    const oidc = await getOidc();
+    
+    if(!oidc.isUserLoggedIn){
+        throw new Error("Should not be called in this context");
+    }
+    
+    const { accessToken } = await oidc.getTokens();
+
+    return fetch(input, {
+        ...init,
+        headers: {
+            ...init?.headers,
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
+};
+
 function OrderHistory(){
 
     const { oidcTokens } = useOidc({ assert: "user logged in" });
@@ -197,9 +215,9 @@ function OrderHistory(){
     useEffect(
         ()=> {
 
-            fetch("https://api.your-domain.net/orders", {
+            fetchWithAuth("https://api.your-domain.net/orders", {
                 headers: {
-                    Authorization: `Bearer ${oidcTokens.accessToken}`
+                    "Content-Type": "application/json"
                 }
             })
             .then(response => response.json())
@@ -236,7 +254,7 @@ export const {
     const { 
         issuerUri, 
         clientId 
-    } = await axios.get("/api/oidc-params").then(r => r.data);
+    } = await fetch("/api/oidc-params").then(r => r.json());
 
     return {
         issuerUri,

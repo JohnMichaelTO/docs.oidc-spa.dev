@@ -7,39 +7,37 @@ description: >-
 
 # Microsoft Entra ID: Microsoft Entrepise Account, Xbox, Skype, ...
 
-## Making Entra ID issue an OIDC Compliant Access Token
+## Making Entra ID issue a JWT Access Token
 
-This step aims at configuring Entra ID so that it issues oidc compliant JWT Access Token. &#x20;
+This step aims at configuring Entra ID so that it issues a JWT Access Token. &#x20;
 
 By default Entra ID issues opaque Access Tokens that can only be validated by your backend calling the Microsoft Graph API. &#x20;
 
-If you are using this library instead of MSAL.js, chances are you see the value in building software that is not vendor locked-in to any specific solution and you probably want to be able to build an API as described in this guide that only&#x20;
-
-This first step is not strictly nessesary for the authentication process to succees, however, if you want your backend to be able to validate the Access Token that you will use as Authorization Bearer in your request to your backend API whithout having to call the Microsoft Graph API [as described in this section](../web-api.md), it is mandatory. &#x20;
-
-Chances are, if you are using this library instead of MSAL.js that you are seeing the value of not having your code vendor locked in to any specific OIDC Provider so this is probably what you want to do. Let's procceed:
+If you want to be able read and validate the access token on the backen in a non vendor locked in way as shown in [the Web API section of this website](../web-api.md), you have to configure a custom scope.
 
 * Navigate to [https://portal.azure.com/](https://portal.azure.com/)
 * In the left pannel select "Microsoft Entra ID"
 * In the left bar "Manage > App Registrations"
 * Click on "New Registration"
-* Name "OpenID Connect Standard APIs", Click Register.
-* Supported Account Type: "Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)"
+* Name "My App - API", Click Register.
+* Supported Account Type: It's up to you.
 * In the left menu navigate to "Manage > Expose API"
 * Click "Add a scope"
-* Application ID URI: "api://oidc", Save and continue
+* Application ID URI: "api://my-app-api", Save and continue
 * Configure the scope as follow then click "Add Scope"
-  * Scope name: "jwt-access-token"
+  * Scope name: "access\_as\_user"
   * Who can consent: Admins and Users
-  * Admin Consent Display Name: "OIDC-compliant Access Token"
-  * Admin consent description: "Enables the issuance of an OIDC-compliant access token. By default, Entra ID issues opaque access tokens that require validation via the Graph API. With this scope, the access token will be a standard JWT containing user information, signed by Microsoft’s public keys, and verifiable independently of Microsoft’s APIs."
+  * Admin Consent Display Name: "JWT Access Token"
+  * Admin consent description: "Ensure issuance of a JWT Access Token"
   * User Consent Display Name: "View your basic profile"
   * User consent description: "Allows the app to see your basic profile (e.g., name, picture, user name, email address)"
   * State: Enabled
 
 ## Registering your Application
 
-* Go Back to "App Registrations"
+* Navigate to [https://portal.azure.com/](https://portal.azure.com/)
+* In the left pannel select "Microsoft Entra ID"
+* In the left bar "Manage > App Registrations"
 * Click on "New Registration" again
 * Display Name "My App" (Put the actuall name of your app)
 * Supported Account Type: It's up to you to decide
@@ -56,10 +54,10 @@ Chances are, if you are using this library instead of MSAL.js that you are seein
 * In the Left Pannel, click on "API Permission"
 * Click "Add a permission"
 * Click "APIs My Organization uses"
-* In the list click on "OpenID Connect Standard APIs"
-* Check "jwt-access-token"
+* In the list click on "My App - API"
+* Check "access\_as\_user"
 * Click "Add permission
-* In the left pannel click on "Overview" and copy the Application (client) ID and Directory (tenant) ID thoses are the two parameters you will need to configure oidc-spa.
+* In the left pannel click on "Overview" and copy the **Application (client) ID** and **Directory (tenant) ID** thoses are the two parameters you will need to configure oidc-spa.
 
 ## Configuring oidc-spa
 
@@ -69,14 +67,14 @@ Chances are, if you are using this library instead of MSAL.js that you are seein
 import { createOidc } from "oidc-spa";
 
 // Directory (tenant) ID:
-const directoryId = "71a0a621-363a-4182-8209-86364aa6de03";
+const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application (client) ID:
-const clientId= "18183b26-1e85-4e04-8d95-8395487634f4";
+const clientId= "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 
 export const prOidc = createOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
     clientId,
-    scopes: ["profile", "api://oidc/jwt-access-token"],
+    scopes: ["profile", "api://my-app-api/access_as_user"],
     homeUrl: import.meta.env.BASE_URL
 });
 ```
@@ -100,3 +98,20 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
 ```
 {% endtab %}
 {% endtabs %}
+
+## Testing
+
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+cd oidc-spa
+git checkout v5.7.0
+cd ..
+mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
+rm -rf oidc-spa
+cd oidc-spa-tanstack-router
+cp .env.local.sample .env.local
+# Here, uncomment the Microsoft Entra ID section and comment the Keycloak section
+# in the .env.local file.
+yarn
+yarn dev
+```

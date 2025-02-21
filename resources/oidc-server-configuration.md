@@ -12,12 +12,12 @@ We have specific configuration instructions for the following Auth Software:
 [keycloak-configuration.md](keycloak-configuration.md)
 {% endcontent-ref %}
 
-{% content-ref url="ory-hydra-configuration.md" %}
-[ory-hydra-configuration.md](ory-hydra-configuration.md)
+{% content-ref url="google-oauth.md" %}
+[google-oauth.md](google-oauth.md)
 {% endcontent-ref %}
 
-{% content-ref url="dex-configuration.md" %}
-[dex-configuration.md](dex-configuration.md)
+{% content-ref url="microsoft-entra-id-microsoft-entrepise-account-xbox-skype-....md" %}
+[microsoft-entra-id-microsoft-entrepise-account-xbox-skype-....md](microsoft-entra-id-microsoft-entrepise-account-xbox-skype-....md)
 {% endcontent-ref %}
 
 If you are using another OIDC Provider, no problem keep reading.

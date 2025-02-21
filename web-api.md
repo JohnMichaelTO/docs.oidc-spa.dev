@@ -40,7 +40,11 @@ axiosInstance.interceptors.request.use(async config => {
 </strong><strong>        throw new Error("We made a logic error: If the user isn't logged in we shouldn't be making request to an API endpoint that requires authentication");
 </strong><strong>    }
 </strong><strong>    
-</strong><strong>    config.headers.Authorization = `Bearer ${oidc.getTokens().accessToken}`;
+</strong><strong>    // 99.9% of the times you'll get the token imediately.
+</strong><strong>    // The 0.1% is after the computer wakes up from sleep.
+</strong><strong>    const { accessToken } = await oidc.getTokens_next();
+</strong><strong>    
+</strong><strong>    config.headers.Authorization = `Bearer ${accessToken}`;
 </strong>
     return config;
 
@@ -85,7 +89,9 @@ axiosInstance.interceptors.request.use(async config => {
 </strong><strong>        throw new Error("We made a logic error: The user should be logged in at this point");
 </strong><strong>    }
 </strong><strong>    
-</strong><strong>    config.headers.Authorization = `Bearer ${oidc.getTokens().accessToken}`;
+</strong><strong>    const { accessToken } = await oidc.getTokens();
+</strong><strong>    
+</strong><strong>    config.headers.Authorization = `Bearer ${accessToken}`;
 </strong>
     return config;
 
@@ -230,7 +236,6 @@ import { getUserTodoStore } from "./todo";
 </strong>
     const app = new OpenAPIHono();
 
- 
     {
 
         const route = createRoute({

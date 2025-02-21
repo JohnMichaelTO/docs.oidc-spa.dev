@@ -125,8 +125,6 @@ Enabling Account Deletion:
 
 ***
 
-[^1]: The user is considered inactive by oidc-spa when:
-
-    * The browser tab is **unfocused**, or
-
-    - The tab is focused, but the user **isn't interacting** (no mouse movement, keyboard typing, or screen touch).
+[^1]: The user is considered inactive by oidc-spa when it's not actively moving the mouse, touching the screen or typing on the keyboard in any tab of your app.\
+    \
+    (More precisely, on any tab of any app that use the same SSO session)
