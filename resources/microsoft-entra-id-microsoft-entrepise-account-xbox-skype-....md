@@ -33,53 +33,12 @@ Chances are, if you are using this library instead of MSAL.js that you are seein
   * Who can consent: Admins and Users
   * Admin Consent Display Name: "OIDC-compliant Access Token"
   * Admin consent description: "Enables the issuance of an OIDC-compliant access token. By default, Entra ID issues opaque access tokens that require validation via the Graph API. With this scope, the access token will be a standard JWT containing user information, signed by Microsoft’s public keys, and verifiable independently of Microsoft’s APIs."
-  * User Consent Display Name: "Read your identity"
-  * User consent description: "Allow the app to verify your identity in order to sign you in."
+  * User Consent Display Name: "View your basic profile"
+  * User consent description: "Allows the app to see your basic profile (e.g., name, picture, user name, email address)"
   * State: Enabled
-* Go Back to "App Registrations"
-* Click on "New Registration" again
-* Display Name "My App" (Put the actuall name of your app)
-* Supported Account Type: It's up to you to decide
-* Click on Register
-* Click on "Add a Redirect URI"
-* Click on "Add Platform"
-* Click on "Single-Page application"
-* Redirect URIs: **https://my-app.com/** (Ensure the trailing slash is included. If your app is hosted under a subpath like /dasboard enter https://my-app.com/dashboard/)
-* Front-channel logout URL: Same as Redirect URI
-* Check both "Access Token" and "ID Token"
-* Click Save
-* Click on "Add URI" and enter **http://localhost:5173/** (Ensure the trailing slash is included, 5173 is the default port that the Vite dev server uses, adapt to your setup)
-* Cick Save
-* In the Left Pannel, click on "API Permission"
-* Click "Add a permission"
-* Click "APIs My Organization uses"
-* In the list click on "OpenID Connect Standard APIs"
-* Check "jwt-access-token"
-* Click "Add permission
-* In the left pannel click on "Overview" and copy the Application (client) ID and Directory (tenant) ID thoses are the two parameters you will need to configure oidc-spa.\
-
-
-d
 
 ## Registering your Application
 
-* Navigate to [https://portal.azure.com/](https://portal.azure.com/)
-* In the left pannel select "Microsoft Entra ID"
-* In the left bar "Manage > App Registrations"
-* Click on "New Registration"
-* Name "OpenID Connect Standard APIs", Click Register.
-* Supported Account Type: "Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant) and personal Microsoft accounts (e.g. Skype, Xbox)"
-* In the left menu navigate to "Manage > Expose API"
-* Click "Add a scope"
-* Application ID URI: "api://oidc", Save and continue
-* Configure the scope as follow then click "Add Scope"
-  * Scope name: "jwt-access-token"
-  * Who can consent: Admins and Users
-  * Admin Consent Display Name: "OIDC-compliant Access Token"
-  * Admin consent description: "Enables the issuance of an OIDC-compliant access token. By default, Entra ID issues opaque access tokens that require validation via the Graph API. With this scope, the access token will be a standard JWT containing user information, signed by Microsoft’s public keys, and verifiable independently of Microsoft’s APIs."
-  * User Consent Display Name: "Read your identity"
-  * User consent description: "Allow the app to verify your identity in order to sign you in."
-  * State: Enabled
 * Go Back to "App Registrations"
 * Click on "New Registration" again
 * Display Name "My App" (Put the actuall name of your app)
@@ -89,7 +48,7 @@ d
 * Click on "Add Platform"
 * Click on "Single-Page application"
 * Redirect URIs: **https://my-app.com/** (Ensure the trailing slash is included. If your app is hosted under a subpath like /dasboard enter https://my-app.com/dashboard/)
-* Front-channel logout URL: Same as Redirect URI
+* Front-channel logout URL: Leave empty
 * Check both "Access Token" and "ID Token"
 * Click Save
 * Click on "Add URI" and enter **http://localhost:5173/** (Ensure the trailing slash is included, 5173 is the default port that the Vite dev server uses, adapt to your setup)
@@ -112,7 +71,7 @@ import { createOidc } from "oidc-spa";
 // Directory (tenant) ID:
 const directoryId = "71a0a621-363a-4182-8209-86364aa6de03";
 // Application (client) ID:
-const clientId= "2bf08137-c88d-4e92-9e1d-fcfa528294e6";
+const clientId= "18183b26-1e85-4e04-8d95-8395487634f4";
 
 export const prOidc = createOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
@@ -130,7 +89,7 @@ import { createReactOidc } from "oidc-spa/react";
 // Directory (tenant) ID:
 const directoryId = "71a0a621-363a-4182-8209-86364aa6de03";
 // Application (client) ID:
-const clientId= "2bf08137-c88d-4e92-9e1d-fcfa528294e6";
+const clientId= "18183b26-1e85-4e04-8d95-8395487634f4";
 
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,

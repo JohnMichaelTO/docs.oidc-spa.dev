@@ -30,13 +30,26 @@ To set up authentication via Google, follow these steps in the **Google Cloud Co
 <figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="warning" %}
-#### Google's OAuth Design Flaw
+#### Client Secret
 
 Google's OAuth implementation has a significant flaw: **PKCE-based authentication fails unless a client secret is provided**.
 
 For public clients, storing secrets is inherently insecure. **PKCE (Proof Key for Code Exchange)** exists precisely to prevent code interception, and Google supports PKCE. **Requiring a client secret in addition to PKCE is unnecessary and misleading**.
 
 That said, **providing the client secret in your frontend code for this specific case has no security implications**. This is purely a poor API design decision on Google's part.
+{% endhint %}
+
+{% hint style="warning" %}
+## Subtituing the Access Token by the ID Token
+
+Google OAuth do not issue JWT Access Token and there is no way to configure it so it does.
+
+As a result, if you want to implement an API you'll have to call Google's special endpoint to validate the access token and get user infos.  \
+You won't be able to implement the standard approach for validating token described in the[ Web API](../web-api.md) section.
+
+Well there is a way to go around this, and that is to ask oidc-spa to substitute the Acess Token by the ID token. &#x20;
+
+Be aware that this is a hack, the ID token is not meant to be sent to the API but it works.
 {% endhint %}
 
 Here’s how to configure `oidc-spa` to work with Google:
@@ -50,7 +63,8 @@ export const prOidc = createOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
-    __clientSecret: "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"
+    __unsafe_clientSecret: "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",
+    __unsafe_unsafe_useIdTokenAsAccessToken: true
 });
 ```
 {% endtab %}
@@ -63,8 +77,26 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
-    __clientSecret: "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"
+    __unsafe_clientSecret: "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",
+    __unsafe_unsafe_useIdTokenAsAccessToken: true
 });
 ```
 {% endtab %}
 {% endtabs %}
+
+## Testing
+
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+cd oidc-spa
+git checkout v5.7.0
+cd ..
+mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
+rm -rf oidc-spa
+cd oidc-spa-tanstack-router
+cp .env.local.sample .env.local
+# Here, uncomment the Google section and comment the Keycloak section
+# in the .env.local file.
+yarn
+yarn dev
+```
