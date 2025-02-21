@@ -64,7 +64,7 @@ export const prOidc = createOidc({
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
     __unsafe_clientSecret: "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",
-    __unsafe_unsafe_useIdTokenAsAccessToken: true
+    __unsafe_useIdTokenAsAccessToken: true
 });
 ```
 {% endtab %}
@@ -78,7 +78,7 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
     __unsafe_clientSecret: "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",
-    __unsafe_unsafe_useIdTokenAsAccessToken: true
+    __unsafe_useIdTokenAsAccessToken: true
 });
 ```
 {% endtab %}
