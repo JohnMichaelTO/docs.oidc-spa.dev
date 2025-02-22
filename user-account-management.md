@@ -22,6 +22,7 @@ Let's, as an example, how you would implement an update password button:
 {% tab title="Vanilla API" %}
 ```typescript
 import { createOidc } from "oidc-spa";
+import { parseKeycloakIssuerUri } from "oidc-spa/tools/parseKeycloakIssuerUri";
 
 const oidc = await createOidc({ ... });
 
@@ -50,15 +51,25 @@ if( oidc.isUserLoggedIn ){
       }
    }
 }
+
+// Url for redirecting users to the keycloak account console.
+const keycloakAccountUrl = parseKeycloakIssuerUri(oidc.params.issuerUri)
+   .getAccountUrl({ 
+       clientId: params.clientId,
+       backToAppFromAccountUrl: `${location.href}${import.meta.env.BASE_URL}`
+    });
+        
 ```
 {% endtab %}
 
 {% tab title="React API" %}
 ```tsx
+import { parseKeycloakIssuerUri } from "oidc-spa/tools/parseKeycloakIssuerUri";
+
 function ProtectedPage() {
     // Here we can safely assume that the user is logged in.
-    const { goToAuthServer, backFromAuthServer } = useOidc({ assert: "user logged in" });
-
+    const { goToAuthServer, backFromAuthServer, params } = useOidc({ assert: "user logged in" });
+    
     return (
         <>
             <button
@@ -87,6 +98,14 @@ function ProtectedPage() {
                     })()}
                 </p>
             )}
+            <a 
+                href={parseKeycloakIssuerUri(params.issuerUri)!.getAccountUrl({
+                    clientId,
+                    backToAppFromAccountUrl: `${location.href}${import.meta.env.BASE_URL}`
+                })}
+            >
+                    My Account
+            </a>
         </>
     );
 }
