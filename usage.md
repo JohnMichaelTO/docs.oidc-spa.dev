@@ -63,8 +63,7 @@ if (!oidc.isUserLoggedIn) {
     const {
         // The accessToken is what you'll use as a Bearer token to 
         // authenticate to your APIs
-        accessToken,
-        decodedIdToken
+        accessToken
     } = await oidc.getTokens_next();
 
     fetch("https://api.your-domain.net/orders", {
@@ -79,6 +78,8 @@ if (!oidc.isUserLoggedIn) {
     // You can also redirect to a custom url with 
     // { redirectTo: "specific url", url: "/bye" }
     oidc.logout({ redirectTo: "home" });
+    
+    const decodedIdToken = oidc.getDecodedIdToken();
 
     // If you are wondering why ther's a decodedIdToken and no
     // decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
@@ -136,65 +137,102 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 function App() {
-
-    const { isUserLoggedIn, login, logout, oidcTokens } = useOidc();
+    const { isUserLoggedIn } = useOidc();
 
     return (
-        isUserLoggedIn ? (
-            <>
-                {/* 
-                Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43
-                If you are wondering why ther's a decodedIdToken and no
-                decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
-                */}
-                <span>Hello {oidcTokens.decodedIdToken.preferred_username}</span>
-                <button onClick={() => logout({ redirectTo: "home" })}>
-                  Logout
-                </button>
-            </>
-        ) : (
-            <button onClick={() => login({ 
-                /** 
-                 * If you are calling login() in the callback of a button click
-                 * (like here) set this to false.  
-                 */
-                doesCurrentHrefRequiresAuth: false
-                /** 
-                 * Optionally, you can add some extra parameter 
-                 * to be added on the login url.
-                 * (Can also be a parameter of createReactOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
-                 */
-                //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
-                /**
-                 * You can allso set where to redirect the user after 
-                 * successful login, by default it will be on the current location.
-                 */
-                // redirectUrl: "/dashboard"
-                /**
-                 * Keycloak: You can also send the user direcly to the register page
-                 * See: https://github.com/keycloakify/oidc-spa/blob/14a3777601c50fa69d1221495d77668e97443119/examples/tanstack-router-file-based/src/components/Header.tsx#L54-L66
-                 */
-            })} >
-              Login
+        <div>
+            {isUserLoggedIn ? <HeaderLoggedIn /> : <HeaderNotLoggedIn />}
+            {isUserLoggedIn && <OrderHistory />}
+        </div>
+    );
+}
+
+function HeaderLoggedIn() {
+    const { logout, decodedIdToken } = useOidc({ assert: "user logged in" });
+
+    return (
+        <div>
+            {/* Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43 */}
+            <span>{`Hello ${decodedIdToken.preferred_username}`}</span>
+            <button onClick={() => logout({ redirectTo: "home" })}>Logout</button>
+        </div>
+    );
+}
+
+function HeaderNotLoggedIn() {
+    const { login } = useOidc({ assert: "user not logged in" });
+
+    return (
+        <div>
+            <button
+                onClick={() =>
+                    login({
+                        /**
+                         * If you are calling login() in the callback of a button click
+                         * (like here) set this to false.
+                         */
+                        doesCurrentHrefRequiresAuth: false
+                        /**
+                         * Optionally, you can add some extra parameter
+                         * to be added on the login url.
+                         * (Can also be a parameter of createReactOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
+                         */
+                        //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
+                        /**
+                         * You can also set where to redirect the user after
+                         * successful login, by default it will be on the current location.
+                         */
+                        // redirectUrl: "/dashboard"
+                    })
+                }
+            >
+                Login
             </button>
-        )
+            {/* If you are using Keycloak you can also implement a register button. See: https://github.com/keycloakify/oidc-spa/blob/efc0380e775d29de76cf412f0a1369353396f621/examples/tanstack-router-file-based/src/components/Header.tsx#L70-L85 */}
+        </div>
     );
 }
 
 import { useEffect, useState } from "react";
 
 type Order = {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 };
+
+export function OrderHistory() {
+    const [orders, setOrders] = useState<Order[] | undefined>(undefined);
+
+    useEffect(() => {
+        fetchWithAuth("https://api.your-domain.net/orders", {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(orders => setOrders(orders));
+    }, []);
+
+    if (orders === undefined) {
+        return <>Loading orders ⌛️</>;
+    }
+
+    return (
+        <ul>
+            {orders.map(order => (
+                <li key={order.id}>{order.name}</li>
+            ))}
+        </ul>
+    );
+}
 
 const fetchWithAuth: typeof fetch = async (input, init) => {
     const oidc = await getOidc();
-    
-    if(!oidc.isUserLoggedIn){
+
+    if (!oidc.isUserLoggedIn) {
         throw new Error("Should not be called in this context");
     }
-    
+
     const { accessToken } = await oidc.getTokens();
 
     return fetch(input, {
@@ -205,41 +243,6 @@ const fetchWithAuth: typeof fetch = async (input, init) => {
         }
     });
 };
-
-function OrderHistory(){
-
-    const { oidcTokens } = useOidc({ assert: "user logged in" });
-
-    const [orders, setOrders] = useState<Order[] | undefined>(undefined);
-
-    useEffect(
-        ()=> {
-
-            fetchWithAuth("https://api.your-domain.net/orders", {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(orders => setOrders(orders));
-
-        },
-        []
-    );
-
-    if(orders === undefined){
-        return <>Loading orders ⌛️</>
-    }
-
-    return (
-        <ul>
-            {orders.map(order => (
-                <li key={order.id}>{order.name}</li>
-            ))}
-        </ul>
-    );
-
-}
 ```
 
 If you get your OIDC parameters from an API you can pass an assync function that returns the oidc parameters. This function gets called when `<OidcProvider />` is first mounted or when `getOidc()` is first called.
