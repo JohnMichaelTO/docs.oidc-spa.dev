@@ -94,7 +94,7 @@ const clientId= "18183b26-1e85-4e04-8d95-8395487634f4";
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
     clientId,
-    scopes: ["profile", "api://oidc/jwt-access-token"],
+    scopes: ["profile", "api://my-app-api/jwt-access-token"],
     homeUrl: import.meta.env.BASE_URL
 });
 ```
