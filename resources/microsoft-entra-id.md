@@ -87,14 +87,14 @@ export const prOidc = createOidc({
 import { createReactOidc } from "oidc-spa/react";
 
 // Directory (tenant) ID:
-const directoryId = "71a0a621-363a-4182-8209-86364aa6de03";
+const directoryId = "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 // Application (client) ID:
-const clientId= "18183b26-1e85-4e04-8d95-8395487634f4";
+const clientId= "XXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
 
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: `https://login.microsoftonline.com/${directoryId}/v2.0`,
     clientId,
-    scopes: ["profile", "api://my-app-api/jwt-access-token"],
+    scopes: ["profile", "api://my-app-api/access_as_user"],
     homeUrl: import.meta.env.BASE_URL
 });
 ```
