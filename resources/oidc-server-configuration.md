@@ -16,8 +16,8 @@ We have specific configuration instructions for the following Auth Software:
 [google-oauth.md](google-oauth.md)
 {% endcontent-ref %}
 
-{% content-ref url="microsoft-entra-id-entrepise-account-xbox-skype....md" %}
-[microsoft-entra-id-entrepise-account-xbox-skype....md](microsoft-entra-id-entrepise-account-xbox-skype....md)
+{% content-ref url="microsoft-entra-id.md" %}
+[microsoft-entra-id.md](microsoft-entra-id.md)
 {% endcontent-ref %}
 
 If you are using another OIDC Provider, no problem keep reading.

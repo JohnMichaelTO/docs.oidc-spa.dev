@@ -5,7 +5,7 @@ description: >-
   Account, Xbox, Skype, Office 360,..."
 ---
 
-# Microsoft Entra ID: Microsoft Entrepise Account, Xbox, Skype, ...
+# Microsoft (Entra ID)
 
 ## Making Entra ID issue a JWT Access Token
 
@@ -32,6 +32,8 @@ If you want to be able read and validate the access token on the backen in a non
   * User Consent Display Name: "View your basic profile"
   * User consent description: "Allows the app to see your basic profile (e.g., name, picture, user name, email address)"
   * State: Enabled
+
+On the backend to validate the token you should check that the aud claim of the JWT of the access token is "api://my-app-api"
 
 ## Registering your Application
 
