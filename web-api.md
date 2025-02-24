@@ -243,7 +243,7 @@ import { getUserTodoStore } from "./todo";
 </strong><strong>        // Here example with Keycloak but it work the same with 
 </strong><strong>        // any provider as long as the access token is a JWT.
 </strong><strong>        issuerUri: "https://auth.my-company.com/realms/myrealm",
-</strong><strong>        audience: "myclient"
+</strong><strong>        audience: "account" // default audience in Keycloak
 </strong><strong>    });
 </strong>
     const app = new OpenAPIHono();
