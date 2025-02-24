@@ -1,4 +1,8 @@
-# TanStack Router + Hono Rest API
+---
+icon: arrow-right-arrow-left
+---
+
+# TanStack Router + Node REST API
 
 See:
 
