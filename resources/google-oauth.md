@@ -42,7 +42,7 @@ That said, **providing the client secret in your frontend code for this specific
 {% hint style="warning" %}
 ## Subtituing the Access Token by the ID Token
 
-Google OAuth do not issue JWT Access Token and there is no way to configure it so it does.
+Google do not issue JWT Access Tokens and there is no way to configure it so it does.
 
 As a result, if you want to implement an API you'll have to call Google's special endpoint to validate the access token and get user infos.  \
 You won't be able to implement the standard approach for validating token described in the[ Web API](../web-api.md) section.
@@ -94,9 +94,6 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
 
 ```bash
 git clone https://github.com/keycloakify/oidc-spa
-cd oidc-spa
-git checkout v5.7.0
-cd ..
 mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
 rm -rf oidc-spa
 cd oidc-spa-tanstack-router
