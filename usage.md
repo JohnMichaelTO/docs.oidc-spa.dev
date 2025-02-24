@@ -86,8 +86,9 @@ if (!oidc.isUserLoggedIn) {
     console.log(`Hello ${decodedIdToken.preferred_username}`);
 
     // Note that in this example the decodedIdToken is not typed.  
-    // What is inside the idToken is defined by the OIDC server you are using.  
-    // If you want to specify the type of the decodedIdToken you can do:
+    // What is inside the idToken is defined by the OIDC server you are using
+    // and the scopes you are requesting if you want to specify the type of the 
+    // decodedIdToken you can do:
     //
     // import { z } from "zod";
     // export const { useOidc } = createUseOidc({
@@ -101,8 +102,6 @@ if (!oidc.isUserLoggedIn) {
 
 }
 ```
-
-
 {% endtab %}
 
 {% tab title="React API" %}
@@ -152,7 +151,7 @@ function HeaderLoggedIn() {
 
     return (
         <div>
-            {/* Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/fddac99d2b49669a376f9a0b998a8954174d195e/examples/tanstack-router/src/oidc.tsx#L17-L43 */}
+            {/* Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/e0914379e2f831161d52c858dccbfcdc1ed4f1e9/examples/tanstack-router-file-based/src/oidc.tsx#L33-L65 */}
             <span>{`Hello ${decodedIdToken.preferred_username}`}</span>
             <button onClick={() => logout({ redirectTo: "home" })}>Logout</button>
         </div>
