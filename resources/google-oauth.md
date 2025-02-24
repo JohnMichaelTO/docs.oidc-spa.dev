@@ -3,7 +3,7 @@ icon: google
 description: Implement "Login with Google"
 ---
 
-# Google OAuth
+# Google
 
 With `oidc-spa`, you would typically use an OIDC Provider like Keycloak to centralize authentication and configure Google as an identity provider within Keycloak. This allows users to select "Google" as a login option.
 
@@ -63,6 +63,9 @@ export const prOidc = createOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
+    scope: ["profile", "email",
+    /*Obtionally more scopes to get more infos in the id token like "https://www.googleapis.com/auth/youtube.readonly", ...*/
+    ],
     __unsafe_clientSecret: "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",
     __unsafe_useIdTokenAsAccessToken: true
 });
@@ -77,6 +80,9 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
     issuerUri: "https://accounts.google.com",
     clientId: "928024164279-ifjvmsffi64slkk81h3gmoh7p03ev68k.apps.googleusercontent.com",
     homeUrl: import.meta.env.BASE_URL,
+    scope: ["profile", "email", 
+       /*Obtionally more scopes to get more info in the id token like "https://www.googleapis.com/auth/youtube.readonly", ...*/
+    ],
     __unsafe_clientSecret: "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",
     __unsafe_useIdTokenAsAccessToken: true
 });
