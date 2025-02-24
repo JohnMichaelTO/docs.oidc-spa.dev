@@ -282,20 +282,9 @@ import { getUserTodoStore } from "./todo";
 })();
 </code></pre>
 
-## Comprehensive example
+## Testable example
 
-If you're looking for a comprehensive Backend+Frontend example you can refer to Insee's project&#x20;
+{% content-ref url="example-setups/tanstack-router-+-node-rest-api.md" %}
+[tanstack-router-+-node-rest-api.md](example-setups/tanstack-router-+-node-rest-api.md)
+{% endcontent-ref %}
 
-{% embed url="https://youtu.be/33VijFArY9s" %}
-
-The app is live here:
-
-{% embed url="https://vite-insee-starter.demo-domain.ovh/" %}
-
-The frontend (Vite project):
-
-{% embed url="https://github.com/InseeFrLab/vite-insee-starter" %}
-
-The backend (Node TODO App REST API):
-
-{% embed url="https://github.com/InseeFrLab/todo-rest-api" %}
