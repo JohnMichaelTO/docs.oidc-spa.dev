@@ -14,6 +14,7 @@
 ## Example setups
 
 * [TanStack Router](example-setups/tanstack-router.md)
+* [TanStack Router + Hono Rest API](example-setups/tanstack-router-+-hono-rest-api.md)
 * [React Router](example-setups/react-router.md)
 
 ## Resources
