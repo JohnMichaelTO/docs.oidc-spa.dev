@@ -23,7 +23,7 @@
 * [OIDC Server Configuration](resources/oidc-server-configuration.md)
 * [Keycloak Configuration](resources/keycloak-configuration.md)
 * [Google](resources/google-oauth.md)
-* [Microsoft (Entra ID)](resources/microsoft-entra-id.md)
+* [Microsoft Entra ID](resources/microsoft-entra-id.md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Performance issues?](resources/performance-issues.md)

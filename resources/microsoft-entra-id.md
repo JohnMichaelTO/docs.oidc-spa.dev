@@ -1,11 +1,9 @@
 ---
 icon: microsoft
-description: >-
-  Formerly Azure Active Directory, enable "Sign In with Microsoft Entreprise
-  Account, Xbox, Skype, Office 360,..."
+description: Formerly Azure Active Directory
 ---
 
-# Microsoft (Entra ID)
+# Microsoft Entra ID
 
 ## Making Entra ID issue a JWT Access Token
 
@@ -20,7 +18,7 @@ If you want to be able read and validate the access token on the backen in a non
 * In the left bar "Manage > App Registrations"
 * Click on "New Registration"
 * Name "My App - API", Click Register.
-* Supported Account Type: It's up to you.
+* Supported Account Type: Account in this Organization.
 * In the left menu navigate to "Manage > Expose API"
 * Click "Add a scope"
 * Application ID URI: "api://my-app-api", Save and continue
@@ -42,7 +40,7 @@ On the backend to validate the token you should check that the aud claim of the 
 * In the left bar "Manage > App Registrations"
 * Click on "New Registration" again
 * Display Name "My App" (Put the actuall name of your app)
-* Supported Account Type: It's up to you to decide
+* Supported Account Type: Account in this organization
 * Click on Register
 * Click on "Add a Redirect URI"
 * Click on "Add Platform"
