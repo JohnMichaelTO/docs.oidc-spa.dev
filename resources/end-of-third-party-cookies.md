@@ -10,7 +10,8 @@ Google is phasing out third-party cookies for all **Chrome** users in 2024. Thes
 
 **It doesn’t.** `oidc-spa` works seamlessly even in environments where third-party cookies are blocked. 
 
-However, if your app is **allowed** to set third-party cookies on your authentication server, you may experience a **slight improvement** in the initial load time of your app.
+However, if your app is **allowed** to set third-party cookies on your authentication server, you may experience a **slight improvement** in the initial load time of your app 
+(because we'll be able to implement silent sign-in in an iframe).  
 
 ### Optimizing for Performance
 
