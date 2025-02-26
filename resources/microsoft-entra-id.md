@@ -33,7 +33,7 @@ If you want to be able read and validate the access token on the backen in a non
   * User consent description: "Allows the app to see your basic profile (e.g., name, picture, user name, email address)"
   * State: Enabled
 
-On the backend to validate the token you should check that the aud claim of the JWT of the access token is "api://my-app-api"
+On the backend to validate the token you should check that the aud claim of the JWT of the access token is "api://my-app-api". (See the [web API page ](../web-api.md) for mor details).
 
 ## Registering your Application
 
