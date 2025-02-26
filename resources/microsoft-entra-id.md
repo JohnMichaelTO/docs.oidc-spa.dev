@@ -5,6 +5,8 @@ description: Formerly Azure Active Directory
 
 # Microsoft Entra ID
 
+{% embed url="https://youtu.be/upcAmYq4JLY" %}
+
 ## Making Entra ID issue a JWT Access Token
 
 This step aims at configuring Entra ID so that it issues a JWT Access Token. &#x20;
@@ -108,6 +110,8 @@ rm -rf oidc-spa
 cd oidc-spa-tanstack-router
 cp .env.local.sample .env.local
 # Here, uncomment the Microsoft Entra ID section and comment the Keycloak section
+# Warnig: You can't login with your personal account so you probably 
+# want to edit the .env.local file with your own configuration.
 # in the .env.local file.
 yarn
 yarn dev
