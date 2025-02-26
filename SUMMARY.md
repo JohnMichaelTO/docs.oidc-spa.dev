@@ -15,6 +15,7 @@
 
 * [React Router](example-setups/react-router.md)
 * [TanStack Router](example-setups/tanstack-router.md)
+* [Multi Providers - Login with Google or Microsoft](example-setups/tanstack-router-1.md)
 * [TanStack Router + Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
 
 ## Resources
