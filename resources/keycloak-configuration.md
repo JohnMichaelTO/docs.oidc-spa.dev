@@ -52,7 +52,7 @@ The `clientId` is usually something like '<mark style="color:yellow;">myapp</mar
    * **http://localhost:\<DEV\_PORT>**<mark style="color:red;">**\<BASE\_URL>**</mark>
    * **Parameters:**
      * <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.\
-       🔹 To avoid issues with [third-party cookie deprecation](end-of-third-party-cookies.md), ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**).
+       🔹 For beter performances ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**). See [end of third party cookies](end-of-third-party-cookies.md).
      * <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
      * **\<DEV\_PORT>**: Example: **5173** (default for Vite's dev server, adapt to your setup).
 9. Click **Save**, and you're done! 🎉
