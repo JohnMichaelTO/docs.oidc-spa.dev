@@ -1,6 +1,6 @@
 ---
-description: Enable to login either using Google or Microsoft (Skype, hotmail, Xbox...)
 icon: split
+description: Enable to login either using Google or Microsoft (Skype, hotmail, Xbox...)
 ---
 
 # Multi Providers - Login with Google or Microsoft
@@ -18,3 +18,5 @@ cp .env.local.sample .env.local
 yarn
 yarn dev
 ```
+
+{% embed url="https://github.com/keycloakify/oidc-spa/tree/main/examples/multi-providers" %}
