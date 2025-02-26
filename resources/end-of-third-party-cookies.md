@@ -2,26 +2,41 @@
 icon: cookie
 ---
 
-# End of third-party cookies
+# End of Third-Party Cookies
 
-Google is ending third-party cookies for all **Chrome** users in 2024 and are already disabled by default in **Safari** and **Firefox**. &#x20;
+Google is phasing out third-party cookies for all **Chrome** users in 2024. These cookies are already blocked by default in **Safari** and **Firefox**.
 
-How does it affec you? **It doesn't** really. oidc-spa works perfectly fine even in situation where third party cookies are blocked.  \
-\
-When your app is allowed to set third party cookies on your auth server however, you'll get a slight performance improvement of initial load time of your app.  \
+### How does this affect you?
 
+**It doesn’t.** `oidc-spa` works seamlessly even in environments where third-party cookies are blocked. 
 
-So, if it's possible, it's a nice to set up thing in a way that ensure they are not blocked.  \
-\
-The rule is quite easy if you don't want cookies to be blocked you should make sure that your auth server and your application share the same parent domain. &#x20;
+However, if your app is **allowed** to set third-party cookies on your authentication server, you may experience a **slight improvement** in the initial load time of your app.
 
-Examples:
+### Optimizing for Performance
 
-* Your app is hosted at www.my-company.com or dashboard.my-company.com or my-company.com/dashboard and your issuerUri is auth.my-company.com/realms/myrealm: :white\_check\_mark: Your auth server and your app have the same parent domain: my-company.com
-* You app is hosted at my-company.com and your issuerUri is https://accounts.google.com or https://login.microsoftonline.com/xxx/v2.0 or https://hydra.project-name.ory.cloud/: :x: Third party cookies will be blocked because your app and the auth server do not have a parent domain in common. &#x20;
+If possible, it’s beneficial to configure your setup in a way that prevents third-party cookies from being blocked. The rule is simple: 
 
-## Google reCaptcha
+> To avoid third-party cookie restrictions, **your authentication server and your application should share the same parent domain**.
 
-reCaptcha is not directly related to oidc-spa since the cookie it sets is on the thegister page (so outside of your app). Anyway, since it's a connex concern: &#x20;
+#### Examples:
+
+✅ **Allowed (Same Parent Domain)**  
+- App hosted at `www.my-company.com`, `dashboard.my-company.com`, or `my-company.com/dashboard`  
+- `issuerUri`: `https://auth.my-company.com/realms/myrealm`  
+- **Parent domain:** `my-company.com`
+
+❌ **Blocked (Different Parent Domains)**  
+- App hosted at `my-company.com`  
+- `issuerUri`:  
+  - `https://accounts.google.com`  
+  - `https://login.microsoftonline.com/xxx/v2.0`  
+  - `https://hydra.project-name.ory.cloud/`  
+- **No common parent domain → Third-party cookies will be blocked.**
+
+---
+
+## Google reCAPTCHA
+
+While reCAPTCHA is not directly related to `oidc-spa`, its cookies are set on the **login page**, outside of your app. Since this is a related concern, you can find more details here:
 
 {% embed url="https://docs.keycloakify.dev/faq-and-help/google-recaptcha-and-end-of-third-party-cookies" %}
