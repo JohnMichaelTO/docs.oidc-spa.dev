@@ -6,7 +6,9 @@ hidden: true
 # Multi Providers - Login with Google or Microsoft
 
 {% hint style="warning" %}
-TInstead of managing multiple authentication providers within your application, consider using [Keycloak](https://www.keycloak.org/) or [Auth0](https://auth0.com/) to streamline and centralize identity provider integration.
+This approach is discouraged.
+
+Instead of managing multiple authentication providers within your application, consider using [Keycloak](https://www.keycloak.org/) or [Auth0](https://auth0.com/) to streamline and centralize identity provider integration.
 {% endhint %}
 
 The example setup is live here: [https://example-multi-providers.oidc-spa.dev/](https://example-multi-providers.oidc-spa.dev)

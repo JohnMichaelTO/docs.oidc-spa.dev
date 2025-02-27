@@ -13,6 +13,7 @@
 
 ## Example setups
 
+* [Example Setups](example-setups/example-setups.md)
 * [React Router](example-setups/react-router.md)
 * [TanStack Router](example-setups/tanstack-router.md)
 * [TanStack Router + Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
