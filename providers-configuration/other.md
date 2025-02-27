@@ -2,29 +2,9 @@
 icon: sliders
 ---
 
-# OIDC Server Configuration
+# Other OIDC Provider
 
-## Specific guides
-
-We have specific configuration instructions for the following Auth Software:
-
-{% content-ref url="keycloak-configuration.md" %}
-[keycloak-configuration.md](keycloak-configuration.md)
-{% endcontent-ref %}
-
-{% content-ref url="google-oauth.md" %}
-[google-oauth.md](google-oauth.md)
-{% endcontent-ref %}
-
-{% content-ref url="microsoft-entra-id.md" %}
-[microsoft-entra-id.md](microsoft-entra-id.md)
-{% endcontent-ref %}
-
-If you are using another OIDC Provider, no problem keep reading.
-
-## Generic Guide
-
-Here are the key takeways for configuring.
+If you are using an OIDC Provider other than the ones for wich we have [a specific guide for](broken-reference), here are the general instruction on how to configure your OIDC Provider:
 
 * Create a OpenID Connect client with **Standard Flow** also refered to as **Authorization code flow**. It's usualy the default setting.
 * Disable client authentication (public client). We don't want to rely on client secret, it would be instantaneously leaked by your SPA.  &#x20;

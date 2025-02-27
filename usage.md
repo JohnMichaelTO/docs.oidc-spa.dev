@@ -8,8 +8,8 @@ description: Let's get your App authenticated!
 Before getting started, you need to get a hold on the two parameters required to connect to your OIDC server, the **issuerUri** and the **clientId**.  \
 Find instruction on how to configure your OIDC server on the following documentation page:
 
-{% content-ref url="resources/oidc-server-configuration.md" %}
-[oidc-server-configuration.md](resources/oidc-server-configuration.md)
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
 {% endcontent-ref %}
 
 {% tabs %}
@@ -114,7 +114,7 @@ To go further you can refer to the examples setup to see how to integrate oidc-s
 ```tsx
 import { createReactOidc } from "oidc-spa/react";
 
-export const { OidcProvider, useOidc, getOidc } = createReactOidc({
+export const { OidcProvider, useOidc, getOidc, withAuthenticationRequired } = createReactOidc({
     // NOTE: If you don't have the params right away see note below.
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
     clientId: "myclient",
@@ -123,7 +123,8 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
      * CRA:   `homeUrl: process.env.PUBLIC_URL`
      * Other: `homeUrl: "/"` (Usually)
      */
-    homeUrl: import.meta.env.BASE_URL
+    homeUrl: import.meta.env.BASE_URL,
+    //extraQueryParams: ()=> ({ audience: "api://my-api" })
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -166,28 +167,13 @@ function HeaderNotLoggedIn() {
             <button
                 onClick={() =>
                     login({
-                        /**
-                         * If you are calling login() in the callback of a button click
-                         * (like here) set this to false.
-                         */
-                        doesCurrentHrefRequiresAuth: false
-                        /**
-                         * Optionally, you can add some extra parameter
-                         * to be added on the login url.
-                         * (Can also be a parameter of createReactOidc `extraQueryParams: ()=> ({ ui_locales: "fr" })`)
-                         */
                         //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
-                        /**
-                         * You can also set where to redirect the user after
-                         * successful login, by default it will be on the current location.
-                         */
-                        // redirectUrl: "/dashboard"
                     })
                 }
             >
                 Login
             </button>
-            {/* If you are using Keycloak you can also implement a register button. See: https://github.com/keycloakify/oidc-spa/blob/efc0380e775d29de76cf412f0a1369353396f621/examples/tanstack-router-file-based/src/components/Header.tsx#L70-L85 */}
+            {/* Register button: See https://github.com/keycloakify/oidc-spa/blob/db50b8fb7a8da683f5622e78b37e005487e9e203/examples/tanstack-router-file-based/src/components/Header.tsx#L75-L104 */}
         </div>
     );
 }
@@ -199,7 +185,7 @@ type Order = {
     name: string;
 };
 
-export function OrderHistory() {
+export const OrderHistory= withAuthenticationRequired(() => {
     const [orders, setOrders] = useState<Order[] | undefined>(undefined);
 
     useEffect(() => {
@@ -223,7 +209,7 @@ export function OrderHistory() {
             ))}
         </ul>
     );
-}
+});
 
 const fetchWithAuth: typeof fetch = async (input, init) => {
     const oidc = await getOidc();

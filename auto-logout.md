@@ -13,7 +13,7 @@ description: >-
 
 The auto logout is defined by **the lifespan of the refresh token**.
 
-For example, if you're using Keycloak and you want an auto disconnect after 5 minutes of inactivity you would set the SSO Session Idle to 5 minutes. See [Keycloak configuration guide](resources/keycloak-configuration.md).
+For example, if you're using Keycloak and you want an auto disconnect after 5 minutes of inactivity you would set the SSO Session Idle to 5 minutes. See [Keycloak configuration guide](providers-configuration/keycloak.md).
 
 If you can't configure your OIDC server you can still enforce auto logout like so:
 

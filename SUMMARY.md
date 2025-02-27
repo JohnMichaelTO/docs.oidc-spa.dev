@@ -15,15 +15,20 @@
 
 * [React Router](example-setups/react-router.md)
 * [TanStack Router](example-setups/tanstack-router.md)
-* [Multi Providers - Login with Google or Microsoft](example-setups/multi-providers.md)
 * [TanStack Router + Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
+* [Multi Providers - Login with Google or Microsoft](example-setups/multi-providers.md)
+
+## Providers Configuration
+
+* [Provider configuration](providers-configuration/provider-configuration.md)
+* [Keycloak](providers-configuration/keycloak.md)
+* [Auth0](providers-configuration/auth0.md)
+* [Microsoft Entra ID](providers-configuration/microsoft-entra-id.md)
+* [Google OAuth 2.0](providers-configuration/google-oauth.md)
+* [Other OIDC Provider](providers-configuration/other.md)
 
 ## Resources
 
-* [OIDC Server Configuration](resources/oidc-server-configuration.md)
-* [Keycloak Configuration](resources/keycloak-configuration.md)
-* [Google](resources/google-oauth.md)
-* [Microsoft Entra ID](resources/microsoft-entra-id.md)
 * [End of third-party cookies](resources/end-of-third-party-cookies.md)
 * [JWT Of the Access Token](resources/jwt-of-the-access-token.md)
 * [Performance issues?](resources/performance-issues.md)

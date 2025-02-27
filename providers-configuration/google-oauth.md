@@ -3,9 +3,9 @@ icon: google
 description: Implement "Login with Google"
 ---
 
-# Google
+# Google OAuth 2.0
 
-With `oidc-spa`, you would typically use an OIDC Provider like Keycloak to centralize authentication and configure Google as an identity provider within Keycloak. This allows users to select "Google" as a login option.
+With `oidc-spa`, you would typically use an OIDC Provider like Keycloak or Auth0 to centralize authentication and configure Google as an identity provider within Keycloak. This allows users to select "Google" as a login option.
 
 That being said, if you don't have a Keycloak instance, you can configure `oidc-spa` directly with Google, as demonstrated in the following video:
 

@@ -1,5 +1,6 @@
 ---
 icon: split
+hidden: true
 ---
 
 # Multi Providers - Login with Google or Microsoft
