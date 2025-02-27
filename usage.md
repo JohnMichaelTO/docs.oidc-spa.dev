@@ -5,8 +5,8 @@ description: Let's get your App authenticated!
 
 # Basic Usage
 
-Before getting started, you need to get a hold on the two parameters required to connect to your OIDC server, the **issuerUri** and the **clientId**.  \
-Find instruction on how to configure your OIDC server on the following documentation page:
+Before getting started, you need to get a hold on the two parameters required to connect to your OIDC provider, the **issuerUri** and the **clientId**.  \
+Find instruction on how to configure your OIDC provider on the following documentation page:
 
 {% content-ref url="broken-reference" %}
 [Broken link](broken-reference)
