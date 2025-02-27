@@ -16,6 +16,7 @@ Find instruction on how to configure your OIDC server on the following documenta
 {% tab title="Vanilla API" %}
 ```typescript
 import { createOidc } from "oidc-spa";
+import { z } from "zod";
 
 const oidc = await createOidc({
     issuerUri: "https://auth.your-domain.net/realms/myrealm",
@@ -25,7 +26,17 @@ const oidc = await createOidc({
      * CRA:   `homeUrl: process.env.PUBLIC_URL`
      * Other: `homeUrl: "/"` (Usually)
      */
-    homeUrl: import.meta.env.BASE_URL
+    homeUrl: import.meta.env.BASE_URL,
+    extraQueryParams: () => ({
+       kc_locale: "en" // Keycloak login/register page language
+       // audience: "https://my-app-api",
+       // scope: "openid profile email api://my-app-api/access_as_user",
+     }),
+     decodedIdTokenSchema: z.object({
+        preferred_username: z.string(),
+        name: z.string()
+        //email: z.string().email().optional()
+     })
 });
 
 if (!oidc.isUserLoggedIn) {
@@ -81,111 +92,210 @@ if (!oidc.isUserLoggedIn) {
     
     const decodedIdToken = oidc.getDecodedIdToken();
 
-    // If you are wondering why ther's a decodedIdToken and no
-    // decodedAccessToken read this: https://docs.oidc-spa.dev/resources/jwt-of-the-access-token
     console.log(`Hello ${decodedIdToken.preferred_username}`);
-
-    // Note that in this example the decodedIdToken is not typed.  
-    // What is inside the idToken is defined by the OIDC server you are using
-    // and the scopes you are requesting if you want to specify the type of the 
-    // decodedIdToken you can do:
-    //
-    // import { z } from "zod";
-    // export const { useOidc } = createUseOidc({
-    //    ...
-    //    decodedIdTokenSchema: z.object({
-    //        sub: z.string(),
-    //        preferred_username: z.string(),
-    //        // ... other properties
-    //    })
-    // })
 
 }
 ```
 {% endtab %}
 
 {% tab title="React API" %}
-This piece of code should give you the necessary information to understand how oidc-spa can be used inside your react components.  \
-To go further you can refer to the examples setup to see how to integrate oidc-spa with your routing library: &#x20;
+```
+src/
+├── components/
+│   └── Header.tsx
+├── pages/
+│   ├── Home.tsx
+│   ├── Account.tsx
+│   ├── Orders.tsx
+├── App.tsx
+├── oidc.tsx
+└── main.tsx
+```
 
-* [react-router-dom example setup](example-setups/react-router.md)
-* [@tanstack/react-router example setup](example-setups/tanstack-router.md)
-
-```tsx
+{% code title="src/oidc.ts" %}
+```typescript
 import { createReactOidc } from "oidc-spa/react";
+import { z } from "zod";
 
-export const { OidcProvider, useOidc, getOidc, withAuthenticationRequired } = createReactOidc({
-    // NOTE: If you don't have the params right away see note below.
-    issuerUri: "https://auth.your-domain.net/realms/myrealm",
-    clientId: "myclient",
-    /**
-     * Vite:  `homeUrl: import.meta.env.BASE_URL`
-     * CRA:   `homeUrl: process.env.PUBLIC_URL`
-     * Other: `homeUrl: "/"` (Usually)
-     */
-    homeUrl: import.meta.env.BASE_URL,
-    //extraQueryParams: ()=> ({ audience: "api://my-api" })
-});
+export const { OidcProvider, useOidc, getOidc, withAuthenticationRequired } =
+    createReactOidc(async () => ({
+        issuerUri: "https://auth.your-domain.net/realms/myrealm",
+        clientId: "myclient",
+        /**
+         * Vite:  `homeUrl: import.meta.env.BASE_URL`
+         * CRA:   `homeUrl: process.env.PUBLIC_URL`
+         * Other: `homeUrl: "/"` (Usually)
+         */
+        homeUrl: import.meta.env.BASE_URL,
+        extraQueryParams: () => ({
+            kc_locale: "en" // Keycloak login/register page language
+            // audience: "https://my-app-api",
+            // scope: "openid profile email api://my-app-api/access_as_user",
+        }),
+        decodedIdTokenSchema: z.object({
+            preferred_username: z.string(),
+            name: z.string()
+            //email: z.string().email().optional()
+        })
+    }));
+
+export const fetchWithAuth: typeof fetch = async (
+    input,
+    init
+) => {
+    const oidc = await getOidc();
+
+    if (oidc.isUserLoggedIn) {
+        const { accessToken } = await oidc.getTokens();
+
+        (init ??= {}).headers = {
+            ...init.headers,
+            Authorization: `Bearer ${accessToken}`
+        };
+    }
+
+    return fetch(input, init);
+};
+```
+{% endcode %}
+
+{% code title="src/main.tsx" %}
+```tsx
+import ReactDOM from "react-dom/client";
+import { OidcProvider } from "./oidc";
+import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <OidcProvider
-        // Optional, it's usually so fast that a fallback is really not required.
-        fallback={<>Checking authentication ⌛️</>}
+    <OidcProvider 
+        //fallback={<h1>Checking authentication ⌛️</h1>}
     >
         <App />
     </OidcProvider>
 );
+```
+{% endcode %}
 
-function App() {
+{% code title="src/App.tsx" %}
+```tsx
+import { Suspense, lazy } from "react";
+import Header from "./components/Header";
+const HomePage = lazy(() => import("./pages/Home"));
+const OrderPage = lazy(() => import("./pages/Orders"));
+const AccountPage = lazy(() => import("./pages/Account"));
+
+export default function App() {
+    const route = useRoute();
+
+    return (
+        <>
+            <Header />
+            <main>
+                <Suspense>
+                    {route === "home" && <HomePage />}
+                    {route === "orders" && <OrderPage />}
+                    {route === "account" && <AccountPage />}
+                </Suspense>
+            </main>
+        </>
+    );
+}
+```
+{% endcode %}
+
+{% code title="src/components/Header.tsx" %}
+```tsx
+import { useOidc } from "../oidc";
+
+export default function Header() {
     const { isUserLoggedIn } = useOidc();
 
     return (
-        <div>
-            {isUserLoggedIn ? <HeaderLoggedIn /> : <HeaderNotLoggedIn />}
-            {isUserLoggedIn && <OrderHistory />}
-        </div>
+        <header>
+            <nav>
+                <Link to="home">Home</Link>
+                <Link to="orders">Orders</Link>
+            </nav>
+            {isUserLoggedIn ? (
+                <AuthButtonsLoggedIn />
+            ) : (
+                <AuthButtonsNotLoggedIn />
+            )}
+        </header>
     );
 }
 
-function HeaderLoggedIn() {
-    const { logout, decodedIdToken } = useOidc({ assert: "user logged in" });
+function AuthButtonsLoggedIn() {
+    const { decodedIdToken, logout } = useOidc({ assert: "user logged in" });
 
     return (
         <div>
-            {/* Note: The decodedIdToken can be typed and validated with zod See: https://github.com/keycloakify/oidc-spa/blob/e0914379e2f831161d52c858dccbfcdc1ed4f1e9/examples/tanstack-router-file-based/src/oidc.tsx#L33-L65 */}
-            <span>{`Hello ${decodedIdToken.preferred_username}`}</span>
-            <button onClick={() => logout({ redirectTo: "home" })}>Logout</button>
+            <span>Logged in as {decodedIdToken.preferred_username}</span>
+            <Link to="account">Account</Link>
+            <button onClick={() => logout({ redirectTo: "home" })}>
+                Logout
+            </button>
         </div>
     );
 }
 
-function HeaderNotLoggedIn() {
+function AuthButtonsNotLoggedIn() {
     const { login } = useOidc({ assert: "user not logged in" });
 
     return (
         <div>
+            <button onClick={() => login()}>Login</button>
             <button
                 onClick={() =>
                     login({
-                        //extraQueryParams: { kc_idp_hint: "google", ui_locales: "fr" }
+                        // Keycloak:
+                        transformUrlBeforeRedirect: url => {
+                            const urlObj = new URL(url);
+                            urlObj.pathname = urlObj.pathname.replace(
+                                /\/auth$/,
+                                "/registrations"
+                            );
+                            return urlObj.href;
+                        }
+                        // Auth0:
+                        // extraQueryParams: { screen_hint: "signup" }
                     })
                 }
             >
-                Login
+                Register
             </button>
-            {/* Register button: See https://github.com/keycloakify/oidc-spa/blob/db50b8fb7a8da683f5622e78b37e005487e9e203/examples/tanstack-router-file-based/src/components/Header.tsx#L75-L104 */}
         </div>
     );
 }
+```
+{% endcode %}
 
+{% code title="src/pages/Home.tsx" %}
+```tsx
+import { useOidc } from "../oidc";
+
+export default function Page() {
+    const { isUserLoggedIn, decodedIdToken } = useOidc();
+
+    return (
+        <h1>Welcome {isUserLoggedIn ? decodedIdToken.name : "stranger"}!</h1>
+    );
+}
+```
+{% endcode %}
+
+{% code title="src/pages/Orders.tsx" %}
+```tsx
 import { useEffect, useState } from "react";
+import { withAuthenticationRequired, fetchWithAuth } from "../oidc";
 
 type Order = {
     id: number;
     name: string;
 };
 
-export const OrderHistory= withAuthenticationRequired(() => {
+// If this component is mounted and the user is not logged in
+// the user will be redirected to the login.  
+const Page = withAuthenticationRequired(() => {
     const [orders, setOrders] = useState<Order[] | undefined>(undefined);
 
     useEffect(() => {
@@ -211,46 +321,107 @@ export const OrderHistory= withAuthenticationRequired(() => {
     );
 });
 
-const fetchWithAuth: typeof fetch = async (input, init) => {
-    const oidc = await getOidc();
+export default Page;
+```
+{% endcode %}
 
-    if (!oidc.isUserLoggedIn) {
-        throw new Error("Should not be called in this context");
+{% code title="src/pages/Account.tsx" %}
+```tsx
+import { useOidc, withAuthenticationRequired } from "../oidc";
+import { parseKeycloakIssuerUri } from "oidc-spa/tools/parseKeycloakIssuerUri";
+
+const Page = withAuthenticationRequired(() => {
+    const {
+        goToAuthServer,
+        backFromAuthServer,
+        params: { issuerUri, clientId }
+    } = useOidc({ assert: "user logged in" });
+
+    const keycloak = parseKeycloakIssuerUri(issuerUri);
+
+    if (keycloak === undefined) {
+        throw new Error(
+            "We expect Keycloak to be the OIDC provider of this App"
+        );
     }
 
-    const { accessToken } = await oidc.getTokens();
-
-    return fetch(input, {
-        ...init,
-        headers: {
-            ...init?.headers,
-            Authorization: `Bearer ${accessToken}`
-        }
-    });
-};
-```
-
-If you get your OIDC parameters from an API you can pass an assync function that returns the oidc parameters. This function gets called when `<OidcProvider />` is first mounted or when `getOidc()` is first called.
-
-```typescript
-export const { 
-  OidcProvide, 
-  useOidc, 
-  getOidc 
-} = createReactOidc(async ()=> {
-
-    const { 
-        issuerUri, 
-        clientId 
-    } = await fetch("/api/oidc-params").then(r => r.json());
-
-    return {
-        issuerUri,
-        clientId,
-        homeUrl: import.meta.env.BASE_URL
-    };
-    
+    return (
+        <div>
+            <h1>Account</h1>
+            <p>
+                <a
+                    href={keycloak.getAccountUrl({
+                        clientId,
+                        backToAppFromAccountUrl: location.href,
+                        locale: "en"
+                    })}
+                >
+                    Go to Keycloak Account Management Page
+                </a>
+            </p>
+            <p>
+                <button
+                    onClick={() =>
+                        goToAuthServer({
+                            extraQueryParams: {
+                                kc_action: "CHANGE_PASSWORD"
+                            }
+                        })
+                    }
+                >
+                    Change My Password
+                </button>
+                {backFromAuthServer?.extraQueryParams.kc_action ===
+                    "CHANGE_PASSWORD" && (
+                    <span>
+                        {backFromAuthServer.result.kc_action_status ===
+                        "success"
+                            ? "Password Updated!"
+                            : "Password unchanged"}
+                    </span>
+                )}
+            </p>
+            <p>
+                <button
+                    onClick={() =>
+                        goToAuthServer({
+                            extraQueryParams: {
+                                kc_action: "UPDATE_PROFILE"
+                            }
+                        })
+                    }
+                >
+                    Update My Profile Information
+                </button>
+                {backFromAuthServer?.extraQueryParams.kc_action ===
+                    "UPDATE_PROFILE" && (
+                    <span>
+                        {backFromAuthServer.result.kc_action_status ===
+                        "success"
+                            ? "Profile Updated!"
+                            : "Profile unchanged"}
+                    </span>
+                )}
+            </p>
+            <p>
+                <button
+                    onClick={() =>
+                        goToAuthServer({
+                            extraQueryParams: {
+                                kc_action: "delete_account"
+                            }
+                        })
+                    }
+                >
+                    Delete My Account
+                </button>
+            </p>
+        </div>
+    );
 });
+
+export default Page;
 ```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
