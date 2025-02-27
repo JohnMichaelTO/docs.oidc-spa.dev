@@ -24,13 +24,13 @@ const oidc = await createOidc({
     /**
      * Vite:  `homeUrl: import.meta.env.BASE_URL`
      * CRA:   `homeUrl: process.env.PUBLIC_URL`
-     * Other: `homeUrl: "/"` (Usually)
+     * Other: `homeUrl: "/"` (Usually, can be something like "/dashboard")
      */
     homeUrl: import.meta.env.BASE_URL,
+    //scopes: ["profile", "email", "api://my-app/access_as_user"],
     extraQueryParams: () => ({
        kc_locale: "en" // Keycloak login/register page language
-       // audience: "https://my-app-api",
-       // scope: "openid profile email api://my-app-api/access_as_user",
+       //audience: "https://my-app-api"
      }),
      decodedIdTokenSchema: z.object({
         preferred_username: z.string(),
@@ -124,13 +124,13 @@ export const { OidcProvider, useOidc, getOidc, withAuthenticationRequired } =
         /**
          * Vite:  `homeUrl: import.meta.env.BASE_URL`
          * CRA:   `homeUrl: process.env.PUBLIC_URL`
-         * Other: `homeUrl: "/"` (Usually)
+         * Other: `homeUrl: "/"` (Usually, can be something like "/dashboard")
          */
         homeUrl: import.meta.env.BASE_URL,
+        //scopes: ["profile", "email", "api://my-app/access_as_user"],
         extraQueryParams: () => ({
             kc_locale: "en" // Keycloak login/register page language
-            // audience: "https://my-app-api",
-            // scope: "openid profile email api://my-app-api/access_as_user",
+            // audience: "https://my-app-api"
         }),
         decodedIdTokenSchema: z.object({
             preferred_username: z.string(),
