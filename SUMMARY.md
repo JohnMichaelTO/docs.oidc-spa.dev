@@ -16,7 +16,7 @@
 * [Example Setups](example-setups/example-setups.md)
 * [React Router](example-setups/react-router.md)
 * [TanStack Router](example-setups/tanstack-router.md)
-* [TanStack Router + Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
+* [Full-Stack with Node REST API](example-setups/tanstack-router-+-node-rest-api.md)
 * [Multi Providers - Login with Google or Microsoft](example-setups/multi-providers.md)
 
 ## Providers Configuration

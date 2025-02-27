@@ -1,10 +1,9 @@
 ---
 icon: arrow-right-arrow-left
+description: A full-stack example covering both the backend and frontend
 ---
 
-# TanStack Router + Node REST API
-
-If you're looking for a comprehensive Backend+Frontend example you can refer to Insee's project&#x20;
+# Full-Stack with Node REST API
 
 {% embed url="https://youtu.be/33VijFArY9s" %}
 
