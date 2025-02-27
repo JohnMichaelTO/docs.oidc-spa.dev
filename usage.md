@@ -423,5 +423,11 @@ const Page = withAuthenticationRequired(() => {
 export default Page;
 ```
 {% endcode %}
+
+Testable examples:
+
+{% content-ref url="broken-reference" %}
+[Broken link](broken-reference)
+{% endcontent-ref %}
 {% endtab %}
 {% endtabs %}

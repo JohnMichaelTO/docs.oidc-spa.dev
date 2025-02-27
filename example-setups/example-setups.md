@@ -1,5 +1,6 @@
 ---
 icon: laptop-code
+hidden: true
 ---
 
 # Example Setups
