@@ -8,7 +8,6 @@ icon: code-simple
 
 `oidc-spa` requires two parameters to connect to your Keycloak instance: `issuerUri` and `clientId`.
 
-{% code title="Example configuration" %}
 ```typescript
 const { ... } = createOidc({
     issuerUri: "...",
@@ -16,7 +15,6 @@ const { ... } = createOidc({
     // ...
 });
 ```
-{% endcode %}
 
 ### `issuerUri`
 
