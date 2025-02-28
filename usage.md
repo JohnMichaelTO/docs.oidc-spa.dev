@@ -117,7 +117,7 @@ src/
 import { createReactOidc } from "oidc-spa/react";
 import { z } from "zod";
 
-export const { OidcProvider, useOidc, getOidc, withLoginRequired } =
+export const { OidcProvider, useOidc, getOidc, withLoginEnforced } =
     createReactOidc(async () => ({
         issuerUri: "https://auth.your-domain.net/realms/myrealm",
         clientId: "myclient",
@@ -286,7 +286,7 @@ export default function Page() {
 {% code title="src/pages/Orders.tsx" %}
 ```tsx
 import { useEffect, useState } from "react";
-import { withLoginRequired, fetchWithAuth } from "../oidc";
+import { withLoginEnforced, fetchWithAuth } from "../oidc";
 
 type Order = {
     id: number;
@@ -295,7 +295,7 @@ type Order = {
 
 // If this component is mounted and the user is not logged in
 // the user will be redirected to the login.  
-const Page = withLoginRequired(() => {
+const Page = withLoginEnforced(() => {
     const [orders, setOrders] = useState<Order[] | undefined>(undefined);
 
     useEffect(() => {
@@ -327,10 +327,10 @@ export default Page;
 
 {% code title="src/pages/Account.tsx" %}
 ```tsx
-import { useOidc, withLoginRequired } from "../oidc";
+import { useOidc, withLoginEnforced } from "../oidc";
 import { parseKeycloakIssuerUri } from "oidc-spa/tools/parseKeycloakIssuerUri";
 
-const Page = withLoginRequired(() => {
+const Page = withLoginEnforced(() => {
     const {
         goToAuthServer,
         backFromAuthServer,
