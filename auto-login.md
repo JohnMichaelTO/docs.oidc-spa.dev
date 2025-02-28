@@ -1,15 +1,17 @@
 ---
 icon: shield
-description: Enforce authentiaction everywhere on your app
+description: Enforce authentication everywhere in your app.
 ---
 
 # Auto Login
 
-If there is no part of your app that can be browsed without being logged which is typically the case for application like dashboards or administration pannel, you can make oidc-spa automatically redirect  users to the login pages when they are not authenticated. This is equivalent to wraping your Root component in withLoginEnforced() but is different in the sense that oidc-spa knows that the user will never be "not logged in" so you **don't** have to:
+If your application requires users to be authenticated at all times—such as dashboards or admin panels—you can configure **oidc-spa** to automatically redirect unauthenticated users to the login page. This ensures that no part of your app is accessible without authentication.
 
-* Check `isUserLoggedIn`, it will always be `true`.&#x20;
-* (React) Use `useOidc({ assert: "user logged in" })` you know that's the case.
-* (React) `withLoginEnforced` is not exposed.
+This is similar to wrapping your root component with `withLoginEnforced()`, but with a key difference: **oidc-spa assumes the user will never be unauthenticated**. This means you **do not need to**:
+
+- Check `isUserLoggedIn`, as it will always be `true`.
+- (React) Use the assertion `useOidc({ assert: "user logged in" })`, since the user is guaranteed to be logged in.
+- (React) Use `withLoginEnforced`, it is not exposed in this mode since it is always enforced.  
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -19,40 +21,40 @@ import { createOidc, type OidcInitializationError } from "oidc-spa";
 const oidc = await createOidc({
     // ...
     autoLogin: true,
-    // Optional, the default value is: location.href (here)
     // postLoginRedirectUrl: "/dashboard"
 })
 .catch((error: OidcInitializationError) => {
-    // Here you need to handle the potential initialization error
-    // because in this mode we cannot fallback to the user being
-    // not authenticated if we ran into an error.
+    // Handle potential initialization errors
+    // In this mode, falling back to an unauthenticated state is not an option.
 
-    if( !error.isAuthServerLikelyDown ){
-        // This mean that there is an issue in the configuration
-        // of your OIDC server.
+    if (!error.isAuthServerLikelyDown) {
+        // This indicates a misconfiguration in your OIDC server.
         throw error;
     }
 
-    alert("Sorry our authentication server is down, try again later");
+    alert("Sorry, our authentication server is down. Please try again later.");
 
-    return new Promise<never>(() => {});
-
+    return new Promise<never>(() => {}); // Prevent further execution
 });
-
 ```
 {% endtab %}
 
 {% tab title="React API" %}
-<pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
+{% code title="src/oidc.ts" %}
+```typescript
+import { createReactOidc } from "oidc-spa/react";
 
 export const { OidcProvider, useOidc, getOidc } = createReactOidc({
    // ...
-<strong>   autoLogin: true,
-</strong><strong>   // postLoginRedirectUrl: "/dashboard"
-</strong>});
-</code></pre>
+   autoLogin: true,
+   // postLoginRedirectUrl: "/dashboard"
+});
+```
+{% endcode %}
 
-In this mode you have to handle initialization errors at the OidcProvider level: &#x20;
+### Handling Initialization Errors
+
+In this mode, initialization errors must be handled at the `<OidcProvider>` level.
 
 {% code title="src/main.tsx" %}
 ```tsx
@@ -68,11 +70,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             ErrorFallback={({ initializationError }) => (
                 <h1 style={{ color: "red" }}>
                     {initializationError.isAuthServerLikelyDown ? (
-                        <>Sorry our authentication server is currently down, please try again later</>
+                        <>Sorry, our authentication server is currently down. Please try again later.</>
                     ) : (
-                        // NOTE: Check initializationError.message for debug information.
-                        // It's an error on your end no need to show it to the user.
-                        <>Unexpected authentication error </>
+                        // Debugging: Use initializationError.message for details.
+                        // This is an issue on your end and should not be shown to users.
+                        <>Unexpected authentication error.</>
                     )}
                 </h1>
             )}
@@ -81,7 +83,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </OidcProvider>
     </React.StrictMode>
 );
-
 ```
 {% endcode %}
 {% endtab %}
