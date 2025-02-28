@@ -9,9 +9,9 @@ If your application requires users to be authenticated at all times—such as da
 
 This is similar to wrapping your root component with `withLoginEnforced()`, but with a key difference: **oidc-spa assumes the user will never be unauthenticated**. This means you **do not need to**:
 
-- Check `isUserLoggedIn`, as it will always be `true`.
-- (React) Use the assertion `useOidc({ assert: "user logged in" })`, since the user is guaranteed to be logged in.
-- (React) Use `withLoginEnforced`, it is not exposed in this mode since it is always enforced.  
+* Check `isUserLoggedIn`, as it will always be `true`.
+* (React) Use the assertion `useOidc({ assert: "user logged in" })`, since the user is guaranteed to be logged in.
+* (React) Use `withLoginEnforced`, it is not exposed in this mode since it is always enforced.
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -52,9 +52,9 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
 ```
 {% endcode %}
 
-### Handling Initialization Errors
+#### Handling Initialization Errors
 
-In this mode, initialization errors must be handled at the `<OidcProvider>` level.
+In this mode, [initialization errors](error-management.md) must be handled at the `<OidcProvider>` level.
 
 {% code title="src/main.tsx" %}
 ```tsx
