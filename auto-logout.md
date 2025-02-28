@@ -11,11 +11,12 @@ description: >-
 
 **Important to understand**: This is a policy that is enforced on the identity server. Not on in the application code!
 
-The auto logout is defined by **the lifespan of the refresh token**.
+Guide on how to configure it:
 
-For example, if you're using Keycloak and you want an auto disconnect after 5 minutes of inactivity you would set the SSO Session Idle to 5 minutes. See [Keycloak configuration guide](providers-configuration/keycloak.md).
+* [keycloloak](providers-configuration/keycloak.md#security-sensitive-apps-banking-admin-panels-etc)
+* [Auth0](providers-configuration/auth0.md#auto-logout-configuration)
 
-If you can't configure your OIDC server you can still enforce auto logout like so:
+If your OIDC provider issue a Refresh Token and if this refresh token is a JWT you don't need to configure anything at the app level (e.g Keycloak). Otherwise you need to explicitely set the `idleSessionLifetimeInSeconds` so it matches what you have defined on the auth provider (e.g Auth0).
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -24,7 +25,8 @@ import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc({
   // ...
-  __unsafe_ssoSessionIdleSeconds: 10 * 60 // 10 minutes
+  
+  idleSessionLifetimeInSeconds: 300 // 5 minutes
   //autoLogoutParams: { redirectTo: "current page" } // Default
   //autoLogoutParams: { redirectTo: "home" }
   //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
@@ -49,8 +51,6 @@ export const {
 ```
 {% endtab %}
 {% endtabs %}
-
-Note that this parameter is marked as unsafe because what happens if the user closes the tab? He will be able to return a while back and still be logged in. oidc-spa can't enforce a security policy when it's not running. Only the identity server can.
 
 ### Displaying a coutdown timer before auto logout
 
