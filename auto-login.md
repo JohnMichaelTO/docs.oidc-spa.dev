@@ -5,12 +5,11 @@ description: Enforce authentiaction everywhere on your app
 
 # Auto Login
 
-If there is no part of your app that can be browsed without being logged which is typically the case for application like dashboard or administration pannel, you can make oidc-spa automatically redirect  users to the login pages when they are not authenticated. &#x20;
+If there is no part of your app that can be browsed without being logged which is typically the case for application like dashboards or administration pannel, you can make oidc-spa automatically redirect  users to the login pages when they are not authenticated. This is equivalent to wraping your Root component in withLoginEnforced() but is different in the sense that oidc-spa knows that the user will never be "not logged in" so you **don't** have to:
 
-In this mode you **don't** have to:
-
-* Check `isUserLoggedIn`, it will always be true.&#x20;
+* Check `isUserLoggedIn`, it will always be `true`.&#x20;
 * (React) Use `useOidc({ assert: "user logged in" })` you know that's the case.
+* (React) `withLoginEnforced` is not exposed.
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -46,13 +45,14 @@ const oidc = await createOidc({
 {% tab title="React API" %}
 <pre class="language-typescript" data-title="src/oidc.ts"><code class="lang-typescript">import { createReactOidc } from "oidc-spa/react";
 
-export const { OidcProvider, useOidc } = createReactOidc({
+export const { OidcProvider, useOidc, getOidc } = createReactOidc({
    // ...
 <strong>   autoLogin: true,
-</strong><strong>   // Optional, the default value is: location.href (here)
 </strong><strong>   // postLoginRedirectUrl: "/dashboard"
 </strong>});
 </code></pre>
+
+In this mode you have to handle initialization errors at the OidcProvider level: &#x20;
 
 {% code title="src/main.tsx" %}
 ```tsx
