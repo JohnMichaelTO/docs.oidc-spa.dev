@@ -36,7 +36,7 @@ To configure a custom domain:
 
 Once you've done that you can use your configured custom domain as issuerUri:
 
-<pre class="language-typescript" data-title="Example config matching the screenshots"><code class="lang-typescript">const { ... } = createOidc({
+<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
 <strong>    issuerUri: "auth.my-company.com",
 </strong>    // ...
 });
@@ -70,14 +70,11 @@ For security-critical apps, users should log in **each visit** and be **logged o
 
 One last important thing, since Auth0 does not issue Refresh Token, and even when it does, it's not a JWT,  you have to let oidc-spa know about how you have configured your server:
 
-{% code title="Example config matching the screenshots" %}
-```typescript
-const { ... } = createOidc({
+<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
     // ...
-    idleSessionLifetimeInSeconds: 300
-});
-```
-{% endcode %}
+<strong>    idleSessionLifetimeInSeconds: 300
+</strong>});
+</code></pre>
 
 Now, if you want, you can implement an auto logout countdown in your app that let your users know when they are about to be logged out:
 

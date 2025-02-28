@@ -5,11 +5,11 @@ description: Let's get your App authenticated!
 
 # Basic Usage
 
-Before getting started, you need to get a hold on the two parameters required to connect to your OIDC provider, the **issuerUri** and the **clientId**.  \
+Before getting started, you need to get a hold on the two parameters required to connect to your OIDC provider, the **issuerUri** and the **clientId**.\
 Find instruction on how to configure your OIDC provider on the following documentation page:
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="broken-reference/" %}
+[broken-reference](broken-reference/)
 {% endcontent-ref %}
 
 {% tabs %}
@@ -426,8 +426,8 @@ export default Page;
 
 Testable examples:
 
-{% content-ref url="broken-reference" %}
-[Broken link](broken-reference)
+{% content-ref url="example-setups/example-setups.md" %}
+[example-setups.md](example-setups/example-setups.md)
 {% endcontent-ref %}
 {% endtab %}
 {% endtabs %}
