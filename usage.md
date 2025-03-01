@@ -29,7 +29,7 @@ const oidc = await createOidc({
     homeUrl: import.meta.env.BASE_URL,
     //scopes: ["profile", "email", "api://my-app/access_as_user"],
     extraQueryParams: () => ({
-       kc_locale: "en" // Keycloak login/register page language
+       ui_locales: "en" // Keycloak login/register page language
        //audience: "https://my-app.my-company.com/api"
      }),
      decodedIdTokenSchema: z.object({
@@ -129,7 +129,7 @@ export const { OidcProvider, useOidc, getOidc, withLoginEnforced } =
         homeUrl: import.meta.env.BASE_URL,
         //scopes: ["profile", "email", "api://my-app/access_as_user"],
         extraQueryParams: () => ({
-            kc_locale: "en" // Keycloak login/register page language
+            ui_locales: "en" // Keycloak login/register page language
             //audience: "https://my-app.my-company.com/api"
         }),
         decodedIdTokenSchema: z.object({
