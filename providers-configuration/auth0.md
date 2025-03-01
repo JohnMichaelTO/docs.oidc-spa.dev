@@ -4,21 +4,53 @@ icon: shield-quartered
 
 # Auth0
 
-{% code title="Example config matching the screenshots" %}
+Let's see how to configure Auth0 to get the required parameters to configure oidc-spa!
+
+{% embed url="https://youtu.be/zPikliLzC84" %}
+
+## Creating your application
+
+* Navigate to [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
+* In the left panel navigate to Applications -> Applications
+* Click "Create Application"
+* Select Application Type: Single Page Application
+* Navigate to the "Settings" tab, you'll see the domain and client ID
+
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
 ```typescript
 const { ... } = createOidc({
     // Referred to as "Domain" in Auth0 terminology:
     issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
-    clientId: "DkoDtyQkYj4UPk3gKk4MjtnD9nskUhpt",
-    extraQueryParams: {
-       // Custom API Identifier
-       audience: "https://app.my-company.com/api"
-    }
+    clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
 });
 ```
-{% endcode %}
 
-## Avoding page refresh
+### Create an API
+
+If you want Auth0 to issue a JWT access token that you can use to consume your api you have to: &#x20;
+
+* Navigate to [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
+* In the left panel navigate to Applications -> APIs
+* Click "Create API"
+* Select Application Type: Single Page Application
+  * Identifier: Ideally you would put the root url of your API like `https://myapp.my-company.com/api` but really, it's just an identifier, you can put anythin you like.
+  * Click Save
+
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+
+<pre class="language-tsx"><code class="lang-tsx">const { ... } = createOidc({
+    // Referred to as "Domain" in Auth0 terminology:
+    issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
+    clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
+<strong>    extraQueryParams: {
+</strong><strong>       // Custom API Identifier
+</strong><strong>       audience: "https://app.my-company.com/api"
+</strong><strong>    }
+</strong>});
+</code></pre>
+
+## (Optional) Configuring a custom domain
 
 It's higly advised that you [configure a custom domain in your Auth0 organization](#user-content-fn-1)[^1] to avoid Auth0 beeing seen as a third party relative to your app by the browsers.  \
 See end of third party cookies for more details. &#x20;
@@ -36,15 +68,20 @@ To configure a custom domain:
 
 Once you've done that you can use your configured custom domain as issuerUri:
 
-<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
-<strong>    issuerUri: "auth.my-company.com",
-</strong>    // ...
-});
-</code></pre>
+```diff
+ const { ... } = createOidc({
+-    issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
++    issuerUri: "auth.my-company.com",
+     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
+     extraQueryParams: {
+         audience: "https://app.my-company.com/api"
+     }
+ });
+```
 
-## Auto Logout configuration
+## (Optional) Auto Logout configuration
 
-This is applicable if you want your user to be automatically disconnected after a set period of inactivity on your app.&#x20;
+This section is applicable if you want your user to be automatically disconnected after a set period of inactivity on your app.&#x20;
 
 For security-critical apps, users should log in **each visit** and be **logged out** [**after inactivity**](#user-content-fn-2)[^2].
 
@@ -57,11 +94,11 @@ For security-critical apps, users should log in **each visit** and be **logged o
   * Click on Settings in the left bar
   * Click on the "Advanced" tab
   * In the "Session Expiration":
-    * Idle Session Lifetime: 300 seconds (5 minutes): ensures users are logged out after 5 minutes of inactivity.
+    * Idle Session Lifetime:  5 minutes (300 seconds): ensures users are logged out after 5 minutes of inactivity.
     * Maximum Session Lifetime: 20160 minutes (14 days): ensures users who actively use the app don’t get logged out unnecessarily
 * Configuring the Lifespawn of the access token:
   * In the left pannel navigate to Applications -> APIs
-  * Select your application
+  * Select "My App - API" (or whatever you put earlyer)
   * Click on the "Settings" tab
   * Unce "Access Token Settings":&#x20;
     * Maximum Access Token Lifetime: 240 seconds (4 minutes): Should be something shorter than the Idle Session Lifetime.&#x20;
@@ -70,8 +107,12 @@ For security-critical apps, users should log in **each visit** and be **logged o
 
 One last important thing, since Auth0 does not issue Refresh Token, and even when it does, it's not a JWT,  you have to let oidc-spa know about how you have configured your server:
 
-<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
-    // ...
+<pre class="language-typescript"><code class="lang-typescript"> const { ... } = createOidc({
+    issuerUri: "auth.my-company.com",
+    clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
+    extraQueryParams: {
+       audience: "https://app.my-company.com/api"
+    },
 <strong>    idleSessionLifetimeInSeconds: 300
 </strong>});
 </code></pre>
