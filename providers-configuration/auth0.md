@@ -2,71 +2,74 @@
 icon: shield-quartered
 ---
 
-# Auth0
+# Auth0 Integration Guide
 
-Let's see how to configure Auth0 to get the required parameters to configure oidc-spa!
+This guide explains how to configure Auth0 to obtain the necessary parameters for setting up `oidc-spa`.
 
 {% embed url="https://youtu.be/zPikliLzC84" %}
 
-## Creating your application
+## Creating Your Application
 
-* Navigate to [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
-* In the left panel navigate to Applications -> Applications
-* Click "Create Application"
-* Select Application Type: Single Page Application
-* Navigate to the "Settings" tab, you'll see the domain and client ID
+1. Navigate to [Auth0 Dashboard](https://manage.auth0.com/dashboard).
+2. In the left panel, go to **Applications → Applications**.
+3. Click **Create Application**.
+4. Select **Single Page Application** as the application type.
+5. Navigate to the **Settings** tab to find the **Domain** and **Client ID**.
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ```typescript
 const { ... } = createOidc({
-    // Referred to as "Domain" in Auth0 terminology:
+    // Referred to as "Domain" in Auth0:
     issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
 });
 ```
 
-### Create an API
+## Creating an API
 
-If you want Auth0 to issue a JWT access token that you can use to consume your api you have to: &#x20;
+If you need Auth0 to issue a JWT access token for your API, follow these steps:
 
-* Navigate to [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
-* In the left panel navigate to Applications -> APIs
-* Click "Create API"
-* Select Application Type: Single Page Application
-  * Identifier: Ideally you would put the root url of your API like `https://myapp.my-company.com/api` but really, it's just an identifier, you can put anythin you like.
-  * Click Save
+1. Navigate to [Auth0 Dashboard](https://manage.auth0.com/dashboard).
+2. In the left panel, go to **Applications → APIs**.
+3. Click **Create API**.
+4. Configure the API:
+   - **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works.
+   - Click **Save**.
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
-<pre class="language-tsx"><code class="lang-tsx">const { ... } = createOidc({
-    // Referred to as "Domain" in Auth0 terminology:
+```typescript
+const { ... } = createOidc({
+    // Referred to as "Domain" in Auth0:
     issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
-<strong>    extraQueryParams: {
-</strong><strong>       // Custom API Identifier
-</strong><strong>       audience: "https://app.my-company.com/api"
-</strong><strong>    }
-</strong>});
-</code></pre>
+    extraQueryParams: {
+       // Custom API Identifier
+       audience: "https://app.my-company.com/api"
+    }
+});
+```
 
-## (Optional) Configuring a custom domain
+## (Optional) Configuring a Custom Domain
 
-It's higly advised that you [configure a custom domain in your Auth0 organization](#user-content-fn-1)[^1] to avoid Auth0 beeing seen as a third party relative to your app by the browsers.  \
-See end of third party cookies for more details. &#x20;
+It is **highly recommended** to [set up a custom domain in Auth0](#user-content-fn-1)[^1] to ensure Auth0 is not treated as a third-party service by browsers.
 
-Indeed, Auth0 is one of those providers that do not by defaut issue a refresh token, so when the acess\_token is about to expire, if you havent cofigured a custom domain, oidc-spa will have to force reload your app to refresh the token, it wont be able to do it silently in the background. &#x20;
+### Why Is a Custom Domain Important?
 
-By default, Auth0 issue access\_token with a 24h validity duraction period. If you leave this default setting you won't experience page refresh of course because oidc-spa will never need to refresh the tokens, that being said, depending of how sensible your app is you might want to change this default as discussed in the next section.
+By default, Auth0 does not issue a refresh token. If your access token expires and you haven't configured a custom domain, `oidc-spa` will **force reload your app** to refresh the token, instead of doing it silently in the background.
 
-To configure a custom domain:
+Auth0 access tokens have a default validity of **24 hours**, so if you don’t modify this setting, you won’t notice page reloads. However, if your app requires shorter expiration times for security reasons, a custom domain is necessary.
 
-* Navigate to the Auth0 dashboard: [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
-* Click on Settings in the left bar
-* Click on the Custom Domain tab
-* Configure a custom domain, see [the end of third pary cookie page ](../resources/end-of-third-party-cookies.md)to know what domain will do usually you would pick something like auth.my-company.com
+### Configuring a Custom Domain in Auth0
 
-Once you've done that you can use your configured custom domain as issuerUri:
+1. Navigate to the [Auth0 Dashboard](https://manage.auth0.com/dashboard).
+2. Click **Settings** in the left panel.
+3. Open the **Custom Domain** tab.
+4. Configure a custom domain (e.g., `auth.my-company.com`).
+   - See [the end of third-party cookie page](../resources/end-of-third-party-cookies.md) for more details.
+
+Once configured, use your custom domain as the `issuerUri`:
 
 ```diff
  const { ... } = createOidc({
@@ -79,50 +82,61 @@ Once you've done that you can use your configured custom domain as issuerUri:
  });
 ```
 
-## (Optional) Auto Logout configuration
+## (Optional) Configuring Auto Logout
 
-This section is applicable if you want your user to be automatically disconnected after a set period of inactivity on your app.&#x20;
+If you want users to be **automatically logged out** after a period of inactivity, follow these steps.
 
-For security-critical apps, users should log in **each visit** and be **logged out** [**after inactivity**](#user-content-fn-2)[^2].
+### Why Enable Auto Logout?
 
-**Why?** Users accessing sensitive applications should not remain authenticated indefinitely, especially if they step away from their device. The session idle timeout ensures automatic logout after inactivity.
+For **security-critical applications**, users should:
 
-**Steps to enforce this policy:**
+- Log in **on every visit**.
+- Be **logged out after inactivity**[^2].
 
-* Configuring the session expiration:
-  * Go to  [https://manage.auth0.com/dashboard](https://manage.auth0.com/dashboard)
-  * Click on Settings in the left bar
-  * Click on the "Advanced" tab
-  * In the "Session Expiration":
-    * Idle Session Lifetime:  5 minutes (300 seconds): ensures users are logged out after 5 minutes of inactivity.
-    * Maximum Session Lifetime: 20160 minutes (14 days): ensures users who actively use the app don’t get logged out unnecessarily
-* Configuring the Lifespawn of the access token:
-  * In the left pannel navigate to Applications -> APIs
-  * Select "My App - API" (or whatever you put earlyer)
-  * Click on the "Settings" tab
-  * Unce "Access Token Settings":&#x20;
-    * Maximum Access Token Lifetime: 240 seconds (4 minutes): Should be something shorter than the Idle Session Lifetime.&#x20;
-    * Implicit / Hybrid Flow Access Token Lifetime: 240 seconds: You don't use it but it has to be set so that you can save.
-  * At the bottom of the page click "Save"
+This prevents unauthorized access if a user steps away from their device.
 
-One last important thing, since Auth0 does not issue Refresh Token, and even when it does, it's not a JWT,  you have to let oidc-spa know about how you have configured your server:
+### Configuring Session Expiration in Auth0
 
-<pre class="language-typescript"><code class="lang-typescript"> const { ... } = createOidc({
+1. Navigate to [Auth0 Dashboard](https://manage.auth0.com/dashboard).
+2. Click **Settings** in the left panel.
+3. Open the **Advanced** tab.
+4. Configure **Session Expiration**:
+   - **Idle Session Lifetime**: `5 minutes` (300 seconds) – logs out inactive users.
+   - **Maximum Session Lifetime**: `14 days` (20160 minutes) – ensures active users stay logged in.
+5. Configure **Access Token Lifetime**:
+   1. Go to **Applications → APIs**.
+   2. Select your API (`My App - API` or the name used earlier).
+   3. Open the **Settings** tab.
+   4. Under **Access Token Settings**:
+      - **Maximum Access Token Lifetime**: `4 minutes` (240 seconds) – should be **shorter** than the Idle Session Lifetime.
+      - **Implicit/Hybrid Flow Access Token Lifetime**: `4 minutes` – required to save settings, even if unused.
+   5. Click **Save**.
+
+### Configuring `oidc-spa` for Auto Logout
+
+Since Auth0 **does not issue refresh tokens** (or issues non-JWT ones), inform `oidc-spa` of your settings:
+
+```typescript
+const { ... } = createOidc({
     issuerUri: "auth.my-company.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
     extraQueryParams: {
        audience: "https://app.my-company.com/api"
     },
-<strong>    idleSessionLifetimeInSeconds: 300
-</strong>});
-</code></pre>
+    idleSessionLifetimeInSeconds: 300
+});
+```
 
-Now, if you want, you can implement an auto logout countdown in your app that let your users know when they are about to be logged out:
+### (Optional) Implementing an Auto Logout Countdown
+
+You can enhance user experience by displaying a countdown warning before logout:
 
 {% content-ref url="../auto-logout.md" %}
 [auto-logout.md](../auto-logout.md)
 {% endcontent-ref %}
 
-[^1]: You can do it even under the free plan, you just have to enter a credit card.
+---
 
-[^2]: The user is considered inactive by oidc-spa when it's not actively moving the mouse, touching the screen or typing on the keyboard in any tab of your app. (More precisely, on any tab of any app that use the same SSO session)
+[^1]: Custom domains are available even under the free plan, but you must enter a credit card.
+
+[^2]: `oidc-spa` considers a user inactive if they **do not** interact with the app (mouse movement, keyboard, or touch input) in **any tab** using the same SSO session.
