@@ -15,8 +15,21 @@ This guide explains how to configure Auth0 to obtain the necessary parameters fo
 3. Click **Create Application**.
 4. Select **Single Page Application** as the application type.
 5. Navigate to the **Settings** tab to find the **Domain** and **Client ID**.
+6. Scroll to the Application URIs section. Set two **Allowed Callback URLs,** ensure both URLs end with `/`:
+   * **https://**<mark style="color:orange;">**\<APP\_DOMAIN>**</mark><mark style="color:red;">**\<BASE\_URL>**</mark>
+   * **http://localhost:\<DEV\_PORT>**<mark style="color:red;">**\<BASE\_URL>**</mark>
+   * **Parameters:**
+     * <mark style="color:orange;">**\<APP\_DOMAIN>**</mark>: Examples: **https://my-company.com** or **https://app.my-company.com**.\
+       🔹 For beter performances ensure <mark style="color:orange;">**\<APP\_DOMAIN>**</mark> and <mark style="color:blue;">**\<KC\_DOMAIN>**</mark> share the same root domain (**my-company.com**). See [end of third party cookies](../resources/end-of-third-party-cookies.md).
+     * <mark style="color:red;">**\<BASE\_URL>**</mark>: Examples: **"/"** or **"/dashboard/"**.
+     * **\<DEV\_PORT>**: Example: **5173** (default for Vite's dev server, adapt to your setup).
+7. **Allowed Logout URLs**: Copy paste what you put into **Allowed Callback URLs**
+8. **Allowed Web Origins:** The origins of the Callback URLs
+9. Click **Save Changes**
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 ```typescript
 const { ... } = createOidc({
