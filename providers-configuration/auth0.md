@@ -96,7 +96,7 @@ Once configured, use your custom domain as the `issuerUri`:
 
 If you want users to be **automatically logged out** after a period of inactivity, follow these steps.
 
-### Why Enable Auto Logout?
+### When and Why Enable Auto Logout?
 
 For **security-critical applications** like banking or admin dasboards users should:
 
@@ -104,6 +104,8 @@ For **security-critical applications** like banking or admin dasboards users sho
 * Be **logged out after inactivity**.
 
 This prevents unauthorized access if a user steps away from their device.
+
+For apps like social media or e-comerce shop on the other hand it's best **not** to enable auto logout.
 
 ### Configuring Session Expiration in Auth0
 
