@@ -116,7 +116,7 @@ export const { OidcProvider, useOidc, getOidc } = createReactOidc({
 
 ## Testing the Setup
 
-To test your configuration using `oidc-spa`:
+To test your configuration: &#x20;
 
 ```bash
 git clone https://github.com/keycloakify/oidc-spa
@@ -126,8 +126,7 @@ cd oidc-spa-tanstack-router
 cp .env.local.sample .env.local
 
 # Uncomment the Microsoft Entra ID section and comment out the Keycloak section.
-# Note: You cannot log in with a personal Microsoft account, so you may need 
-# to adjust the .env.local file with your organization's configuration.
+# Update the values with your own.
 
 yarn
 yarn dev

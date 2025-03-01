@@ -7,7 +7,7 @@ description: Implement "Login with Google"
 
 With `oidc-spa`, you would typically use an OIDC Provider like Keycloak or Auth0 to centralize authentication and configure Google as an identity provider within Keycloak. This allows users to select "Google" as a login option.
 
-That being said, if you don't have a Keycloak instance, you can configure `oidc-spa` directly with Google, as demonstrated in the following video:
+That being said, if you really want to, you can configure `oidc-spa` directly with Google, as demonstrated in the following video:
 
 {% embed url="https://youtu.be/d0RgnM4vXbc" %}
 
@@ -98,8 +98,10 @@ mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
 rm -rf oidc-spa
 cd oidc-spa-tanstack-router
 cp .env.local.sample .env.local
-# Here, uncomment the Google section and comment the Keycloak section
-# in the .env.local file.
+
+# Edit .env.local, uncomment the Google section and comment the Keycloak section
+# replace the values by your own.
+
 yarn
 yarn dev
 ```

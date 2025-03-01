@@ -4,6 +4,10 @@ icon: code-simple
 
 # Keycloak
 
+{% embed url="https://youtu.be/qJOHjI_QKvk" %}
+oidc-spa with Keycloak
+{% endembed %}
+
 ## Getting the `issuerUri` and `clientId`
 
 `oidc-spa` requires two parameters to connect to your Keycloak instance: `issuerUri` and `clientId`.
@@ -122,6 +126,23 @@ Enabling Account Deletion:
 4. Click **Assign Role**, filter by **client**, select **Delete Account**, and assign it.
 
 ***
+
+## Testing the Setup
+
+To test your configuration:
+
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
+rm -rf oidc-spa
+cd oidc-spa-tanstack-router
+cp .env.local.sample .env.local
+
+# Edit the .env.local file to reflect your configuration
+
+yarn
+yarn dev
+```
 
 [^1]: The user is considered inactive by oidc-spa when it's not actively moving the mouse, touching the screen or typing on the keyboard in any tab of your app.\
     \

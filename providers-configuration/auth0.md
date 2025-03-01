@@ -142,4 +142,22 @@ You can enhance user experience by displaying a countdown warning before logout:
 
 ***
 
+## Testing the Setup
+
+To test your configuration: &#x20;
+
+```bash
+git clone https://github.com/keycloakify/oidc-spa
+mv oidc-spa/examples/tanstack-router-file-based oidc-spa-tanstack-router
+rm -rf oidc-spa
+cd oidc-spa-tanstack-router
+cp .env.local.sample .env.local
+
+# Uncomment the Auth0 section and comment out the Keycloak section.
+# Update the values with your own.
+
+yarn
+yarn dev
+```
+
 [^1]: Custom domains are available even under the free plan, but you must enter a credit card.
