@@ -2,7 +2,7 @@
 icon: shield-quartered
 ---
 
-# Auth0 Integration Guide
+# Auth0
 
 This guide explains how to configure Auth0 to obtain the necessary parameters for setting up `oidc-spa`.
 
@@ -34,22 +34,19 @@ If you need Auth0 to issue a JWT access token for your API, follow these steps:
 2. In the left panel, go to **Applications → APIs**.
 3. Click **Create API**.
 4. Configure the API:
-   - **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works.
-   - Click **Save**.
+   * **Identifier**: Ideally, use your API's root URL (e.g., `https://myapp.my-company.com/api`). However, this is just an identifier, so any unique string works. It will be the aud claim of the access tokens issued. See [the web API page](../web-api.md) for more info.
+   * Click **Save**.
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
-```typescript
-const { ... } = createOidc({
-    // Referred to as "Domain" in Auth0:
+<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
     issuerUri: "dev-r2h8076n6dns3d4y.us.auth0.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
     extraQueryParams: {
-       // Custom API Identifier
-       audience: "https://app.my-company.com/api"
-    }
+<strong>       audience: "https://app.my-company.com/api"
+</strong>    }
 });
-```
+</code></pre>
 
 ## (Optional) Configuring a Custom Domain
 
@@ -67,7 +64,7 @@ Auth0 access tokens have a default validity of **24 hours**, so if you don’t m
 2. Click **Settings** in the left panel.
 3. Open the **Custom Domain** tab.
 4. Configure a custom domain (e.g., `auth.my-company.com`).
-   - See [the end of third-party cookie page](../resources/end-of-third-party-cookies.md) for more details.
+   * See [the end of third-party cookie page](../resources/end-of-third-party-cookies.md) for more details.
 
 Once configured, use your custom domain as the `issuerUri`:
 
@@ -88,10 +85,10 @@ If you want users to be **automatically logged out** after a period of inactivit
 
 ### Why Enable Auto Logout?
 
-For **security-critical applications**, users should:
+For **security-critical applications** like banking or admin dasboards users should:
 
-- Log in **on every visit**.
-- Be **logged out after inactivity**[^2].
+* Log in **on every visit**.
+* Be **logged out after inactivity**.
 
 This prevents unauthorized access if a user steps away from their device.
 
@@ -101,33 +98,28 @@ This prevents unauthorized access if a user steps away from their device.
 2. Click **Settings** in the left panel.
 3. Open the **Advanced** tab.
 4. Configure **Session Expiration**:
-   - **Idle Session Lifetime**: `5 minutes` (300 seconds) – logs out inactive users.
-   - **Maximum Session Lifetime**: `14 days` (20160 minutes) – ensures active users stay logged in.
+   * **Idle Session Lifetime**: `5 minutes` (300 seconds) – logs out inactive users.
+   * **Maximum Session Lifetime**: `14 days` (20160 minutes) – ensures active users stay logged in.
 5. Configure **Access Token Lifetime**:
    1. Go to **Applications → APIs**.
    2. Select your API (`My App - API` or the name used earlier).
    3. Open the **Settings** tab.
    4. Under **Access Token Settings**:
-      - **Maximum Access Token Lifetime**: `4 minutes` (240 seconds) – should be **shorter** than the Idle Session Lifetime.
-      - **Implicit/Hybrid Flow Access Token Lifetime**: `4 minutes` – required to save settings, even if unused.
+      * **Maximum Access Token Lifetime**: `4 minutes` (240 seconds) – should be **shorter** than the Idle Session Lifetime.
+      * **Implicit/Hybrid Flow Access Token Lifetime**: `4 minutes` – required to save settings, even if unused.
    5. Click **Save**.
-
-### Configuring `oidc-spa` for Auto Logout
 
 Since Auth0 **does not issue refresh tokens** (or issues non-JWT ones), inform `oidc-spa` of your settings:
 
-```typescript
-const { ... } = createOidc({
+<pre class="language-typescript"><code class="lang-typescript">const { ... } = createOidc({
     issuerUri: "auth.my-company.com",
     clientId: "DzXSmwQS7oSTQGLbafhrPXYLT0mOMyZD",
     extraQueryParams: {
        audience: "https://app.my-company.com/api"
     },
-    idleSessionLifetimeInSeconds: 300
-});
-```
-
-### (Optional) Implementing an Auto Logout Countdown
+<strong>    idleSessionLifetimeInSeconds: 300
+</strong>});
+</code></pre>
 
 You can enhance user experience by displaying a countdown warning before logout:
 
@@ -135,8 +127,6 @@ You can enhance user experience by displaying a countdown warning before logout:
 [auto-logout.md](../auto-logout.md)
 {% endcontent-ref %}
 
----
+***
 
 [^1]: Custom domains are available even under the free plan, but you must enter a credit card.
-
-[^2]: `oidc-spa` considers a user inactive if they **do not** interact with the app (mouse movement, keyboard, or touch input) in **any tab** using the same SSO session.

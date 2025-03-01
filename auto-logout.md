@@ -11,12 +11,14 @@ description: >-
 
 **Important to understand**: This is a policy that is enforced on the identity server. Not on in the application code!
 
+In OIDC provider it is usually refered to as **Idle Session Lifetime**, this values define for how long an inactive session should be kept in the records of the server.  &#x20;
+
 Guide on how to configure it:
 
 * [keycloloak](providers-configuration/keycloak.md#security-sensitive-apps-banking-admin-panels-etc)
-* [Auth0](providers-configuration/auth0.md#auto-logout-configuration)
+* [Auth0](providers-configuration/auth0.md#optional-configuring-auto-logout)
 
-If your OIDC provider issue a Refresh Token and if this refresh token is a JWT you don't need to configure anything at the app level (e.g Keycloak). Otherwise you need to explicitely set the `idleSessionLifetimeInSeconds` so it matches what you have defined on the auth provider (e.g Auth0).
+[If your OIDC provider issue a Refresh Token and if this refresh token is a JWT](#user-content-fn-1)[^1] you don't need to configure anything at the app level. Otherwise you need to explicitely set the `idleSessionLifetimeInSeconds` so it matches how you have configured your server. &#x20;
 
 {% tabs %}
 {% tab title="Vanilla API" %}
@@ -25,7 +27,6 @@ import { createOidc } from "oidc-spa";
 
 const oidc = await createOidc({
   // ...
-  
   idleSessionLifetimeInSeconds: 300 // 5 minutes
   //autoLogoutParams: { redirectTo: "current page" } // Default
   //autoLogoutParams: { redirectTo: "home" }
@@ -43,7 +44,7 @@ export const {
     useOidc
 } = createReactOidc({
     // ...
-    __unsafe_ssoSessionIdleSeconds: 10 * 60 // Ten minutes
+    __unsafe_ssoSessionIdleSeconds: 300 // 5 minuts
     //autoLogoutParams: { redirectTo: "current page" } // Default
     //autoLogoutParams: { redirectTo: "home" }
     //autoLogoutParams: { redirectTo: "specific url", url: "/a-page" }
@@ -82,3 +83,7 @@ Example implementation of a 60 seconds countdown before autologout.
 {% endembed %}
 {% endtab %}
 {% endtabs %}
+
+[^1]: If you're not sure use createOidc({ debugLogs: true }) ans see what's printed in the console after you  log in.\
+    \
+    For reference, if you are using Keycloak you do not need to provide the `idleSessionLifetimeInSeconds` parameter to oidc-spa, with Auth0, you do.&#x20;

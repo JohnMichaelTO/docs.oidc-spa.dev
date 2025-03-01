@@ -5,11 +5,11 @@ description: Let's get your App authenticated!
 
 # Basic Usage
 
-Before getting started, you need to get a hold on the two parameters required to connect to your OIDC provider, the **issuerUri** and the **clientId**.\
+Before getting started, you need to get a hold of the few parameters required to connect to your OIDC provider.\
 Find instruction on how to configure your OIDC provider on the following documentation page:
 
-{% content-ref url="broken-reference/" %}
-[broken-reference](broken-reference/)
+{% content-ref url="providers-configuration/provider-configuration.md" %}
+[provider-configuration.md](providers-configuration/provider-configuration.md)
 {% endcontent-ref %}
 
 {% tabs %}
@@ -30,7 +30,7 @@ const oidc = await createOidc({
     //scopes: ["profile", "email", "api://my-app/access_as_user"],
     extraQueryParams: () => ({
        kc_locale: "en" // Keycloak login/register page language
-       //audience: "https://my-app-api"
+       //audience: "https://my-app.my-company.com/api"
      }),
      decodedIdTokenSchema: z.object({
         preferred_username: z.string(),
@@ -130,7 +130,7 @@ export const { OidcProvider, useOidc, getOidc, withLoginEnforced } =
         //scopes: ["profile", "email", "api://my-app/access_as_user"],
         extraQueryParams: () => ({
             kc_locale: "en" // Keycloak login/register page language
-            // audience: "https://my-app-api"
+            //audience: "https://my-app.my-company.com/api"
         }),
         decodedIdTokenSchema: z.object({
             preferred_username: z.string(),
